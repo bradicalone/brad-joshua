@@ -2,6 +2,7 @@ const path = require('path');
 //Basically this file is a Node script
 
 module.exports = (env) => {
+    console.log(env)
     const isProduction = env === 'production';
     
     return {

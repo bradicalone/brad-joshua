@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build:dev": "webpack",
+    "build:dev": "webpack --env development",
     "build:prod": "webpack -p --env production",
     "dev-server": "webpack-dev-server"
   },

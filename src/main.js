@@ -1558,7 +1558,7 @@ function SvgPage(){
     this.start;
     //Page animated down removes circle to be animated again
     this.animateEnd = function(e){
-
+        console.log('hey you')
          _('interactive-container').style.pointerEvents = 'auto' 
 
         if(toggle){
@@ -1697,8 +1697,10 @@ function SvgPage(){
         
          
     }.bind(this));
-}
-var svgPage = new SvgPage();
+};
+window.svgPage = new SvgPage();
+
+ 
 
 function getPos(ele){
         
@@ -1715,7 +1717,7 @@ function getPos(ele){
         //Places image's property left to the center of it's container (center of page)
         centeredLeft: elemLeft
     }
-}
+};
 
 
 //Different screen sizing , elements adjust to it
@@ -3959,6 +3961,7 @@ window.onload = function(e){
     robot[0].loadImages(); //then loades images into slider
 
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
+    
     
 }.bind(this);
 
