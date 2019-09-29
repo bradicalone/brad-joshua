@@ -1609,7 +1609,6 @@ function SvgPage(){
         }
   
         _('interactive-container').style.pointerEvents = 'none' 
-        console.log(btnOpen)
         event = e
         _(btnOpen)[0].style.display = 'block'
         closeButtonShow(-56)
@@ -1698,6 +1697,7 @@ function SvgPage(){
          
     }.bind(this));
 };
+//Add to window object to be used for html page onend function
 window.svgPage = new SvgPage();
 
  
@@ -2214,7 +2214,7 @@ function hoverMap(){
      
            //If click comes from opening svg modals
             if(target === 'card-color-st39' || wW > 768 && e.type === 'click'){
-                console.log(path, currentPath)
+
                 return  removeAll(path)
                         
             }
@@ -2231,17 +2231,17 @@ function hoverMap(){
                 currentPath = animatePathLines(path, map_paths)
                 AnimateCircles(path, map_paths)
                 animateCardsUp(path)
-                
-                
+                     
                 //Only runs after mouseover elements run first, then initiated. 
                 _('interactive-container').onmouseover = function(e) {
                     if(e.target.className !== 'open-canvas-page' && wW > 768){
-                    
+ 
                         removeAll()
                     }
                 }
             }
         }
+      
         if (e.type == 'mouseover' && wW > 768) {
             handleMap(e)
         }else if(e.type === 'click'){
@@ -2438,7 +2438,6 @@ var robotSection = function(e){
 
     function checkForClasses(){
         var circles = _('robot-st34').length
-        // var electricPath = _('electric-path').length
        
         // Add blinking light classes
         for (var i = 0; i < circles; i++) {
@@ -3251,14 +3250,7 @@ class InLargeImg extends RollerUnit {
     imageClose(e){
         this.removeClickListener()
         if(e.target.tagName !== 'IMG'){
-            // if(isFirefox) {
-            //     // this.imgWrap.classList.remove('show-img')
-            //     this.imgWrap.classList.replace('show-img', 'hide-img')
-            //     this.container.style.opacity = 0
-            //     this.clipValue = -100
-            //     this.clipStart = 100
-            //     return requestAnimationFrame(this.animateClipPath)
-            // }
+
             this.removeImg(e)
         }
     }
@@ -3310,7 +3302,6 @@ class InLargeImg extends RollerUnit {
     }
     
     mouseMove(e){
-    //    console.log(this.Y)
         // multipy by 1.5 because of the lag, so I speed it up just a bit
         let dist = e.clientY - this.mouseY
         let value =   dist / this.Y
@@ -3337,9 +3328,7 @@ class InLargeImg extends RollerUnit {
         let verPiece = document.getElementById('vert_piece')
         let vertY = verPiece.getBBox().y
         let handleY = _('img-scale').getBBox().y    
-        // let vertY = verPiece.getBoundingClientRect().y
-        // let handleY = _('img-scale').getBoundingClientRect().y   
-    //   console.log(v, h, vertY, handleY)
+
         //Gets distance slider needs to go  
         this.Y = handleY - vertY
         
@@ -3445,7 +3434,6 @@ function startRobotFlight(){
         }
         requestAnimationFrame(drawBurners);
     };
-    // requestAnimationFrame(drawBurners);
 
 
     //*** Draws Stars ***
@@ -3532,7 +3520,7 @@ function startRobotFlight(){
     };
 
     var flyIntoPlace = {
-        beginY: graphHeight - robotHeight / 10,
+        beginY: graphHeight - robotHeight / 12,
         hiddenX: function(){
             let difference = graphWidth  -  wW
             if(!wW < graphWidth){
@@ -3689,7 +3677,7 @@ class Navigation {
         this.animateScroll = this.animateScroll.bind(this)
         this.start = 0
     }
-    getDistance(el, index){
+    getDistance(el){
      
         let top = el.getBoundingClientRect().top
         let height = el.getBoundingClientRect().height
@@ -3781,7 +3769,6 @@ class Navigation {
                 this.scrollTo768(e)
             }
         });
-       
     }
 }
 const navigation = new Navigation()
@@ -3790,9 +3777,9 @@ navigation.controller()
 const toggleAnimate = {
     stars: true,
     flightStars: true,
-
+    circuit: true
 }
-
+// circuitToggle.toggleAnim = false
 const robot = new robotSection('event');
 const robotFlight = startRobotFlight();
 
@@ -3803,27 +3790,41 @@ const triggerStars = (e) => {
     var star_count = 25
     var makeStars = robot[1]()
     makeStars.createStars(star_count, update)
-   
 }
 
 class ScrollAnimate extends Navigation {
     constructor(){
         super()
-        this.sections = document.querySelectorAll('.section-three-robot, #section-five-web')
-        
+        this.sections = document.querySelectorAll('.section-three-robot, #section-five-web, #section-one-digital, #section-two-popups')
     }
     checkElemTop(e){
-        
         let length = this.sections.length
-         
+       
         while(length--){
             let dist = this.getDistance(this.sections[length])
-     
             let elmTop = dist.top
             let elmHeight = dist.height
             let elmBottom = dist.bottom
+
+            //Digital Hand
+            if(length === 0){
+
+                if(elmBottom < 100)toggleAnimate.circuit = false
+            }
+            //Map
+            if(length === 1){
+               const pointerLocation = _('oval-pointer').getBoundingClientRect().x
+
+               //Stops scroll from running hovermap function over and over
+               if(pointerLocation > 0){
+                    const hovermap = hoverMap()
+                    const dist = hovermap[1](e)[0]; // Position distance of show-icon gooey
+                    hovermap[0]( dist, true )  // handler(e) function remove gooey
+                }
+            }
             // Robot Design stars element
-            if(length === 0) {
+            if(length === 2) {
+  
                 //Page in view start animate stars
                 if(elmTop <= elmHeight && elmBottom >= elmHeight && toggleAnimate.stars){
                     
@@ -3838,24 +3839,24 @@ class ScrollAnimate extends Navigation {
                 }
             }
             //Flying Robot / Graph element
-            if(length === 1){
+            if(length === 3){
+                
                 if(elmTop < elmHeight / 2 && elmBottom >= elmHeight && toggleAnimate.flightStars){
                     toggleRobot.flight = false
                     toggleAnimate.flightStars = false
-                    // requestAnimationFrame( robotFlight.drawBurners )
-                    // robotFlight.flyIntoPlace.createStars('up')
-                    // requestAnimationFrame(robotFlight.flyIn)
+                    requestAnimationFrame( robotFlight.drawBurners )
+                    robotFlight.flyIntoPlace.createStars('up')
+                    requestAnimationFrame(robotFlight.flyIn)
 
                 }
                 if( !toggleAnimate.flightStars  &&  (elmTop > elmHeight - 75 || elmBottom <= 0) ){
+
+                    //Removes ray
+                    _('rec-clip').style.display = "none"
                     toggleAnimate.flightStars = true
                     toggleRobot.flight = true
                 }
-         
-            //    toggleRobot.toggle = true;  //stop stars and robot, just need to toggleRobot.toggle = false; to start
-            // console.log(elmTop, elmHeight, elmBottom)
-            }
-            
+            } 
         }
     }
 
@@ -3898,41 +3899,125 @@ class Digital {
     }
 }
 
+const circuitToggle = {
+    toggleAnim: true
+}
+
 class Circuit {
     constructor(){
         this.animCircuit = _('animate-circuit')
-        this.animCircle = _('animate-cir')
+        this.startAnimation = this.startAnimation.bind(this)
+        this.speed = []
+        this.elements = []
+        this.index = []
+        this.pathLength = []
     }
-    // startAnimation(){
-    //     function draw(timestamp){
-    //         if(!start) start = timestamp
-    //         var runtime = timestamp - start
-    //         var progress = Math.min(runtime / 1200, 1)
-          
-    //         for (var i = 0; i < pathLength; i++) {
-    //             _('electric-path')[i].style.strokeDashoffset = 280 + (280 * progress)
-    //         }
+    getDashStroke(el){
+   
+        let length = el.length
+        while(length--){
+            let index = el[length]
+            this.pathLength.unshift(_('animate-circuit')[index].getTotalLength() )
+        }
+
+    }
+    getRandomPath(count){
+        let i = 0
+        let length = count 
+        
+        while(i < length){
             
-    //         if(progress < 1){
-    //             requestAnimationFrame(draw)
-    //         }else{
-    //             for (var i = 0; i < pathLength; i++) {
-    //                 _('electric-path')[i].setAttribute('style', '')
-    //             }
-    //             return;
-    //         }
-    //     }
-    //     requestAnimationFrame(draw)
-    // }
-    removeAnimations(){
+            let item = Math.floor( Math.random() * 10 )
+            
+            //Checks first to make sure same index is not in array
+            let notInArray = this.index.indexOf(item) === -1
+           
+            if(notInArray){
+                i++
+                this.index.push( item )
+                this.elements.push( _('animate-circuit')[item] )
+                
+            }
+        }
 
+        //Updates new random elements and returns them
+        this.animCircuit = this.elements
+        return this.index
+      
+    }
+    addData(index){
+ 
+        this.speed.push({speed: 0, j: 0, delay: 25 * index})
+    }
+    setDashArray(count){
+        let allElements = _('animate-circuit').length 
+        let index = this.getRandomPath(count)
+        let i = count
+        this.getDashStroke(index)
+                
+        while(i--){
+   
+            this.animCircuit[i].style.stroke = 'orange'
+            this.animCircuit[i].style.strokeDashoffset = -this.pathLength[i] 
+            this.animCircuit[i].style.strokeDasharray = this.pathLength[i] 
+            
+            this.addData(count)
+            
+           if(i === 0) this.startAnimation()
+        }
     }
 
+    startAnimation(){
+        let dist = this.pathLength
+        let el = this.animCircuit
+        let duration = this.speed
+        let length = el.length
+       
+        function draw(){
+            //Removes Animation
+            if(!toggleAnimate.circuit){
+                let i = el.length
+
+                while(i--){
+                    el[i].removeAttribute('style')
+                }
+                return;
+            }
+
+            for (let i = length - 1; i >= 0; i--) {
+                let dashArray = el[i].style.strokeDasharray
+                let dashOffset = el[i].style.strokeDashoffset
+                // StrokeDashoffset is less then 0 runs same direction 
+                if(dashOffset >= 0 && !duration[i].j){
+                    duration[i].speed = 0
+                    duration[i].j = 1
+                    iterator = 0
+                }
+                
+                const speed = duration[i].speed +=4
+                let iterator = dashOffset <= 0 ? -dist[i] : 0
+
+                //Stops strokedasharray at about a 3rd to keep the length that size
+                if(dashArray >= (dist[i] / 1.8) ){
+                    
+                    dashArray = dist[i] - speed
+                }
+
+                el[i].style.strokeDashoffset = iterator + speed
+            }
+            requestAnimationFrame(draw)
+        }
+        requestAnimationFrame(draw.bind(this))
+    }
 }
+
 const digital = new Digital()
 const circuit = new Circuit()
 
+    circuitToggle.toggleAnim = false
+
 window.onload = function(e){
+    circuit.setDashArray(6)
     // digital.startHandAnimation()
      // console.log(document.getElementById('test-line').getTotalLength());
  

@@ -80,6 +80,7 @@ section {
 }
 
 #digital_shake {
+	/* display: none; */
 	position: relative;
 }
 
@@ -104,7 +105,6 @@ section {
     flex-direction: column;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
-    
 	margin-bottom: 50px;
 	padding-top: 50px;
 }
@@ -114,9 +114,6 @@ section {
     width: 500px;
     text-align: center;
 }
-/* #section-four-web .content {
-	margin-bottom: 10px;
-} */
 
  .content p {
 	 white-space: nowrap;
@@ -139,6 +136,15 @@ section {
     width: 100%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.animate-circuit {
+	fill: none;
+	stroke: none;
+	stroke-width: 2px;
+	stroke-miterlimit: 10;
+	stroke-linecap: round;
+    stroke-linejoin: round
 }
 
 .circle-thumbnails {
@@ -657,7 +663,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	top: 0px;
 }
 
-#section-two-popups h1, #section-one-digital h1, #section-six-photo h1 {
+#section-two-popups h1, #section-one-digital h1 {
 	margin: 15px 0;
 	font: 200 48px "Oswald";
 }
@@ -1028,12 +1034,10 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 @keyframes scale {
-	0% {
-		transform: scale(1);
+	to {
+		transform: translateY(-45px) scale(.9);
 	}
-	100% {
-		transform: scale(.9);
-	}
+	
 }
 
 
@@ -1051,20 +1055,36 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 #section-six-photo {
-	display: flex;
-    justify-content: center;
-    align-items: flex-end;
-	width: 100%;
-	height: 100%;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
 	background: #464a7b;
-	/* background: linear-gradient(to bottom, #1a1d40 0%,#1a1d40 30%,#464a7b 100%); */
-	/* background: linear-gradient(to bottom, #464a7b 0%,#464a7b 10%,#1a1d40 100%); */
+	position: relative;
+}
+
+.photo-robot-wrapper {
+	width: 100%;
+	max-width: 685px;
+}
+
+#photo-robot {
+	width: 100%;
 }
 
 .svg-photo-container {
-	width: 100%;
-    max-width: 690px;
-    position: relative;
+	display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.svg-photo-container .content {
+	left: 50px;
+}
+#section-six-photo h1 {
+	margin: 15px 0;
+	font: 400 56px "Oswald";
 }
 
 @media (max-width: 546px) {
@@ -1089,7 +1109,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	}
 
 	.content h1 {
-		font-size: 36px !important;
+		font: 400 36px "Oswald" !important;
+		/* font-size: 36px !important; */
 	}
 	#section-one-digital .content p, #section-two-popups .content p {
 		font-size: 4vw;
@@ -1100,6 +1121,10 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	#section-four-web .content h1, .section-three-robot .content h1 {
 		margin: 25px 7px;
 	}
+	.svg-photo-container {
+		flex-direction: column;
+	}
+	
 
 }
 @media (min-width: 546px) and (max-width: 1025px){
@@ -1109,8 +1134,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	}
 	#section-four-web .content h1{
 		margin: 25px 10px;
-			font: 200 64px "Oswald";
-		}
+		font: 400 64px "Oswald";
+	}
 }
 @media (max-height: 700px) {
 	.design .about-content .languages {
@@ -1176,12 +1201,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		width: 100%;
 		left: 19%;
 		transform: rotate(45deg) scale(1.4) translate(-50%, -50%);
-		/* max-width: 1300px;
-		position: absolute;
-		top: 89%;
-		width: 100%;
-		left: 19%;
-		transform: rotate(45deg) scale(1.4) translate(-61%, -72%); */
 	}
 
 	.btnContainer button {
@@ -1199,8 +1218,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	#section-four-web .content {
 		margin-bottom: 50px;
 	}
-	.svg-photo-container {
-		width: 95%;
+	.svg-photo-container .content {
+		left: 10px;
+	}
+	.svg-photo-container .content h1{
+		font-size: 37px !important;
 	}
 
 }
@@ -1227,6 +1249,19 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		font-size: 35px;
 	}
 }
+@media (min-height: 650px) and (min-width: 768px){
+	.section-three-robot .content {
+		font-size: 43px;
+		width: 100%;
+		max-width: 1114px;
+		position: absolute;
+		justify-content: space-between;
+		left: 50%;
+		top: 115px;
+		transform: translate(-50%);
+		padding: 0 22px;
+	}
+}
  @media (max-height: 800px) and (max-width: 850px){
  	.developer .nestedItems {
  		-webkit-box-align: end;
@@ -1240,24 +1275,14 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 @media (min-width: 940px) {
-	.section-three-robot .content {
-		font-size: 43px;
-		width: 100%;
-		max-width: 1114px;
-		position: absolute;
-		justify-content: space-between;
-		left: 50%;
-		top: 115px;
-		transform: translate(-50%);
-		padding: 0 22px;
-	}
+
 	@supports (-webkit-marquee-repetition:infinite) and (object-fit:fill) {
 		.section-three-robot .content{
 				top: 220px !important;
 			}
 		}
 }
-@media (max-width: 940px) {
+@media (max-width: 768px) {
 	.section-three-robot .content {
 		width: 100%;
 		justify-content: center;
@@ -1286,7 +1311,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	}
 	#section-four-web .content h1 {
 		margin: 0px 25px;
-		font: 400 67px "Oswald";
+		font: 400 64px "Oswald";
+	}
+
+	#section-two-popups .content {
+		padding: 0;
 	}
 }
 
