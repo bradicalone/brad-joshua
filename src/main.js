@@ -1,21 +1,28 @@
 "use strict";
 /******  GLOBAL VARIABLES  *******/ 
-var animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
+const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
                  "M565.1,0v900H182.7c0,0-44-72.5-44-191.7c0-107.5,121.8-396.1,121.8-533.8C260.5,41,245.9,0,245.9,0H565.1z;"+
                  "M571.8,0v900H386.7c0,0-31.4-42.7-31.4-191.7C355.3,568,555,285,555,80.7C555,20,551.5,0,551.5,0H571.8z;"+
                  "M573,0v900h-2.3c0,0,0.4-65.2,0.4-192.4c0-176.8-0.2-347.9-0.2-533.4c0-124-0.2-174.2-0.2-174.2H573z";
 
-var animate400 = "M390,800H6c0,0-6-45.9-6-161.3C0,443.6,5,286.1,5,47.3C5,10.7,3,0,3,0h387V800z;"+
+const animate400 = "M390,800H6c0,0-6-45.9-6-161.3C0,443.6,5,286.1,5,47.3C5,10.7,3,0,3,0h387V800z;"+
                  "M390,800H96c0,0-46-45.9-46-161.3c0-195.1,130-352.6,130-591.3c0-36.7-3-47.3-3-47.3h213V800z;"+
                  "M390,800H243c0,0-37-45.9-37-161.3c0-195.1,176-352.6,176-591.3c0-36.7-1-47.3-1-47.3h9V800z;"+
                  "M390,800h-7c0,0,0-45.9,0-161.3c0-195.1,5-352.6,5-591.3c0-36.7-1-47.3-1-47.3h3V800z";
 
-var isFirefox = typeof InstallTrigger !== 'undefined';
-var isSafari = navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") === -1;
+const isFirefox = typeof InstallTrigger !== 'undefined';
+const isSafari = navigator.userAgent.indexOf("Safari") != -1 && navigator.userAgent.indexOf("Chrome") === -1;
+//If user is on ipad / iphone / ipod
+let isIOS = function(){
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream
+}
 
-var wW = window.innerWidth;
-var wH = window.innerHeight;
-var lastDist;
+const wW = window.innerWidth;
+const wH = window.innerHeight;
+let lastDist;
+
+
 
 
 //Firefox Bug, transforms not working, so sets attribute to 0 instead
@@ -4028,8 +4035,8 @@ class Circuit {
                     iterator = 0
                 }
                 
-                const speed = duration[i].speed +=4
-                let iterator = dashOffset <= 0 ? -dist[i] : 0
+                const speed =  duration[i].speed += isIOS ? 4 : 8;
+                let iterator = dashOffset <= 0 ? -dist[i] : 0;
 
                 //Stops strokedasharray at about a 3rd to keep the length that size
                 if(dashArray >= (dist[i] / 1.8) ){
@@ -4053,7 +4060,7 @@ const circuit = new Circuit()
 window.onload = function(e){
     circuit.setDashArray(6)
     // digital.startHandAnimation()
-     // console.log(document.getElementById('test-line').getTotalLength());
+
  
     let newTechnologies = new Technologies();
     newTechnologies.loadImages();
