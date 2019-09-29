@@ -4035,7 +4035,7 @@ class Circuit {
                     iterator = 0
                 }
                 
-                const speed =  duration[i].speed += isIOS ? 4 : 8;
+                const speed =  duration[i].speed += isIOS() ? 8 : 4;
                 let iterator = dashOffset <= 0 ? -dist[i] : 0;
 
                 //Stops strokedasharray at about a 3rd to keep the length that size
