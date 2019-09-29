@@ -50,6 +50,7 @@ ul {
 	pointer-events: none;
 }
 .nav-list button {
+	font-weight: 500;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -451,7 +452,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 .map-wrap {
 	position: relative;
-    left: calc(50% - 160px);
+    left: calc(50% - 130px);
     width: 70%;
     max-width: 775px;
     transform: translate(-50%);
@@ -1083,19 +1084,29 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	left: 50px;
 }
 #section-six-photo h1 {
-	margin: 15px 0;
+	margin: 10px 0;
 	font: 400 56px "Oswald";
 }
 
 @media (max-width: 546px) {
+	#digital_shake {
+		top: 60px;
+	}
 	.interactive-container .icon-wrap {
 		display: none;
 	}
 	.map-wrap {
-		top: 27.5% !important;
-		left: 108px;
+		left: 135px;
 	}
+	.interactive-container  {
+		position: absolute;
+    	top: 31%;
+    	transform: translateY(-50%);
+	}
+	.interactive-container .button-wrap{
+		position: absolute;
 
+	}
 	/* Keeps robot same size and centered */
 	#robot-svg {
 		width: 546px;
@@ -1105,12 +1116,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		transform: translate(-50%);
 	}
 	.button-wrap li {
-		font-size: 3vw;
+		font-size: 3.5vw;
 	}
 
 	.content h1 {
-		font: 400 36px "Oswald" !important;
-		/* font-size: 36px !important; */
+		font: 400 33px "Oswald" !important;
 	}
 	#section-one-digital .content p, #section-two-popups .content p {
 		font-size: 4vw;
@@ -1119,13 +1129,27 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		font-size: 5vw;
 	}
 	#section-four-web .content h1, .section-three-robot .content h1 {
-		margin: 25px 7px;
+		margin: 0px 7px;
 	}
 	.svg-photo-container {
 		flex-direction: column;
 	}
-	
-
+	#section-two-popups .content {
+		padding: 0;
+		margin: 20px;
+	}
+	#section-one-digital .content {
+		padding: 0;
+		margin: 0;
+	}
+	.svg-assembly-wrapper {
+		top: 50px;
+	}
+	.photo-robot-wrapper {
+		width: 90%;
+		left: 5%;
+		position: relative;
+	}
 }
 @media (min-width: 546px) and (max-width: 1025px){
 	.map-wrap {
@@ -1170,6 +1194,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		position: absolute;
 		right: 0;
 		top: 50px;
+		width: 45px;
 	}
 	.nav-list li {
 		pointer-events: none;
@@ -1222,6 +1247,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		left: 10px;
 	}
 	.svg-photo-container .content h1{
+		margin: 0;
 		font-size: 37px !important;
 	}
 

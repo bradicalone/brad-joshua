@@ -3703,7 +3703,7 @@ class Navigation {
     animateScroll(timestamp){
         if(!this.start) this.start = timestamp
         let runtime =  timestamp - this.start
-        let progress = this.outExpo( Math.min( runtime / 1000, 1 ) )
+        let progress = this.outExpo( Math.min( runtime / 1200, 1 ) )
         let y = this.startPos + (this.elDist * progress)
        
         window.scroll(0, y)
@@ -3912,15 +3912,48 @@ class Circuit {
         this.index = []
         this.pathLength = []
     }
+    //SVG .getTotalLength() fix
+    getSvgPolylineLength(el) {
+        let totalLength = 0;
+        let prevPos;
+        for (var i = 0 ; i < el.points.numberOfItems;i++) {
+            var pos = el.points.getItem(i);
+            if (i > 0) {
+                totalLength += Math.sqrt(Math.pow((pos.x - prevPos.x), 2) + Math.pow((pos.y - prevPos.y), 2));
+            }
+            prevPos = pos;
+        }
+        return totalLength;
+    }
+    //SVG .getTotalLength() fix
+    getSvgEementLength(el){
+        const constructor = el.constructor
+
+        switch (constructor) {
+            case SVGPolylineElement: return this.getSvgPolylineLength(el);
+            case SVGLineElement: return ((x1, x2, y1, y2) => Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 ))(el.getAttribute('x1'), el.getAttribute('x2'),
+                                        el.getAttribute('y1'), el.getAttribute('y2'));
+            case SVGRectElement: return (el.getAttribute('width')*2) + (el.getAttribute('height')*2);
+            case SVGPathElement: return el.getTotalLength();
+        }
+    }
+    //3rd method ran
     getDashStroke(el){
-   
+
         let length = el.length
         while(length--){
             let index = el[length]
-            this.pathLength.unshift(_('animate-circuit')[index].getTotalLength() )
+            try{
+                // Fix for SVG.getTotalLength()  not working on some paths. 
+                this.pathLength.unshift( this.getSvgEementLength(_('animate-circuit')[index]) )
+                // this.getSvgEementLength(_('animate-circuit')[index])
+            }catch(err){
+                console.log(err)
+            }
+            
         }
-
     }
+    //2nd method ran
     getRandomPath(count){
         let i = 0
         let length = count 
@@ -3928,7 +3961,7 @@ class Circuit {
         while(i < length){
             
             let item = Math.floor( Math.random() * 10 )
-            
+
             //Checks first to make sure same index is not in array
             let notInArray = this.index.indexOf(item) === -1
            
@@ -3945,12 +3978,13 @@ class Circuit {
         return this.index
       
     }
+    //4th method ran
     addData(index){
  
         this.speed.push({speed: 0, j: 0, delay: 25 * index})
     }
+    //1st method ran
     setDashArray(count){
-        let allElements = _('animate-circuit').length 
         let index = this.getRandomPath(count)
         let i = count
         this.getDashStroke(index)
@@ -3962,11 +3996,11 @@ class Circuit {
             this.animCircuit[i].style.strokeDasharray = this.pathLength[i] 
             
             this.addData(count)
-            
+    
            if(i === 0) this.startAnimation()
         }
     }
-
+    //Ran last
     startAnimation(){
         let dist = this.pathLength
         let el = this.animCircuit
@@ -4007,7 +4041,7 @@ class Circuit {
             }
             requestAnimationFrame(draw)
         }
-        requestAnimationFrame(draw.bind(this))
+        requestAnimationFrame(draw)
     }
 }
 
