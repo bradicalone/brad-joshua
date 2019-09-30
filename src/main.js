@@ -4000,7 +4000,7 @@ class Circuit {
     }
     //1st method ran
     setDashArray(count){
-        let index = wW < 768 ? this.getRandomPath(1) : this.getRandomPath(count)
+        let index = wW < 768 ? this.getRandomPath(3) : this.getRandomPath(count)
 
         let i = index.length
         this.getDashStroke(index)
@@ -4009,7 +4009,7 @@ class Circuit {
    
             this.animCircuit[i].style.stroke = 'orange'
             this.animCircuit[i].style.strokeDashoffset = -this.pathLength[i]
-            this.animCircuit[i].style.strokeDasharray = this.pathLength[i] / 12
+            this.animCircuit[i].style.strokeDasharray = this.pathLength[i]
             
             this.addData(count)
     
@@ -4023,7 +4023,7 @@ class Circuit {
         let el = this.animCircuit
         let duration = this.speed
         let length = el.length
-        let countSpeed = isIOS() ? 8 : 8;
+        let countSpeed = isIOS() ? 8 : 4;
 
         function draw(){
             //Removes Animation
