@@ -3953,7 +3953,6 @@ class Circuit {
             try{
                 // Fix for SVG.getTotalLength()  not working on some paths. 
                 this.pathLength.unshift( this.getSvgEementLength(_('animate-circuit')[index]) )
-                // this.getSvgEementLength(_('animate-circuit')[index])
             }catch(err){
                 console.log(err)
             }
@@ -3968,17 +3967,21 @@ class Circuit {
     }
     //2nd method ran
     getRandomPath(count){
+
         let i = 0
         let length = count 
-        
+ 
         while(i < length){
-            
-            let item = Math.floor( Math.random() * 10 )
+           
+          
+            // item is the long-path which is at index 0 if count === 1, else run random 
+            let item = count === 1 ? 0 : Math.floor( Math.random() * 10 )
 
-            //Checks first to make sure same index is not in array
+            //Checks first to make sure no duplicate items in array
             let notInArray = this.index.indexOf(item) === -1
            
             if(notInArray){
+
                 i++
                 this.index.push( item )
                 this.elements.push( _('animate-circuit')[item] )
@@ -3986,7 +3989,6 @@ class Circuit {
             }
         }
 
-        //Updates new random elements and returns them
         this.animCircuit = this.elements
         return this.index
       
@@ -3998,29 +4000,30 @@ class Circuit {
     }
     //1st method ran
     setDashArray(count){
-        let index = this.getRandomPath(count)
-        if(wW < 768) return this.addClasses()
-        let i = count
+        let index = wW < 768 ? this.getRandomPath(1) : this.getRandomPath(count)
+
+        let i = index.length
         this.getDashStroke(index)
                 
         while(i--){
    
             this.animCircuit[i].style.stroke = 'orange'
-            this.animCircuit[i].style.strokeDashoffset = -this.pathLength[i] 
-            this.animCircuit[i].style.strokeDasharray = this.pathLength[i] 
+            this.animCircuit[i].style.strokeDashoffset = -this.pathLength[i]
+            this.animCircuit[i].style.strokeDasharray = this.pathLength[i] / 12
             
             this.addData(count)
     
-           if(i === 0) this.startAnimation()
+        //    if(i === 0) this.startAnimation()
         }
     }
     //Ran last
     startAnimation(){
         let dist = this.pathLength
+  
         let el = this.animCircuit
         let duration = this.speed
         let length = el.length
-        let countSpeed = isIOS() ? 8 : 4;
+        let countSpeed = isIOS() ? 8 : 8;
 
         function draw(){
             //Removes Animation
@@ -4046,11 +4049,12 @@ class Circuit {
                 
                 const speed =  duration[i].speed += countSpeed
                 let iterator = dashOffset <= 0 ? -dist[i] : 0;
-
+             
                 //Stops strokedasharray at about a 3rd to keep the length that size
                 if(dashArray >= (dist[i] / 1.8) ){
+            
                     
-                    dashArray = dist[i] - speed
+                    el[i].style.strokeDasharray = dist[i] - speed
                 }
 
                 el[i].style.strokeDashoffset = iterator + speed
@@ -4069,8 +4073,8 @@ window.onload = function(e){
     const digital = new Digital()
     const circuit = new Circuit()
 
-    circuit.setDashArray(1)
-    digital.startHandAnimation()
+    circuit.setDashArray(6)
+    // digital.startHandAnimation()
 
  
     let newTechnologies = new Technologies();
