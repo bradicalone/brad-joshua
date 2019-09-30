@@ -4069,7 +4069,7 @@ window.onload = function(e){
     const digital = new Digital()
     const circuit = new Circuit()
 
-    circuit.setDashArray(6)
+    circuit.setDashArray(1)
     // digital.startHandAnimation()
 
  
