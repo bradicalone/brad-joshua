@@ -3893,10 +3893,11 @@ class Digital {
 
         this.watch.classList.add('rotateWatch')
         for(let i = 0; i < this.path.length; i++){
+            console.log(this.path[i].getTotalLength())
              this.path[i].classList.add('path')
         }
         //Removes animation after 4 intervals 
-        setTimeout( ()=> { this.removeDigitalAnimation()},8100)
+        setTimeout( ()=> { this.removeDigitalAnimation()},15100)
     }
     removeDigitalAnimation(){
         this.watch.classList.remove('rotateWatch')
@@ -3972,16 +3973,14 @@ class Circuit {
         let length = count 
  
         while(i < length){
-           
-          
+
             // item is the long-path which is at index 0 if count === 1, else run random 
-            let item = count === 1 ? 0 : Math.floor( Math.random() * 10 )
+            let item = Math.floor( Math.random() * 10 )
 
             //Checks first to make sure no duplicate items in array
             let notInArray = this.index.indexOf(item) === -1
            
             if(notInArray){
-
                 i++
                 this.index.push( item )
                 this.elements.push( _('animate-circuit')[item] )
@@ -4000,7 +3999,7 @@ class Circuit {
     }
     //1st method ran
     setDashArray(count){
-        let index = wW < 768 ? this.getRandomPath(3) : this.getRandomPath(count)
+        let index = this.getRandomPath(count)
 
         let i = index.length
         this.getDashStroke(index)
@@ -4019,11 +4018,10 @@ class Circuit {
     //Ran last
     startAnimation(){
         let dist = this.pathLength
-  
         let el = this.animCircuit
         let duration = this.speed
         let length = el.length
-        let countSpeed = isIOS() ? 8 : 4;
+        let countSpeed = 5;
 
         function draw(){
             //Removes Animation
@@ -4052,8 +4050,7 @@ class Circuit {
              
                 //Stops strokedasharray at about a 3rd to keep the length that size
                 if(dashArray >= (dist[i] / 1.8) ){
-            
-                    
+        
                     el[i].style.strokeDasharray = dist[i] - speed
                 }
 
@@ -4073,8 +4070,8 @@ window.onload = function(e){
     const digital = new Digital()
     const circuit = new Circuit()
 
-    circuit.setDashArray(6)
-    // digital.startHandAnimation()
+    // circuit.setDashArray(6)
+    digital.startHandAnimation()
 
  
     let newTechnologies = new Technologies();
