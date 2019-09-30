@@ -148,6 +148,22 @@ section {
     stroke-linejoin: round
 }
 
+.animatePath {
+	stroke-dasharray: 350;
+	stroke: orange;
+	animation: stroke 10s linear infinite;
+}
+
+@keyframes stroke {
+	from {
+	  stroke-dashoffset: 680;
+	}
+	to 	{
+	  stroke-dashoffset: -680;
+	}
+}
+
+
 .circle-thumbnails {
 	cursor: pointer;
 	padding: 0;
@@ -630,31 +646,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	transition: transform .7s ease-out 1s;
 }
 
-/* .popUpCard {
-	animation: cardPop .7s ease-out 1s forwards;
-}
-@keyframes cardPop {
-	0%{
-		transform: translateY(0px);
-	}
-	100%{
-		transform: translateY(-140px);
-	}
-}
-
-.removeCard {
-	animation: cardDown .7s ease-out forwards ;
-}
-@keyframes cardDown {
-	from {
-		transform: translateY(-140px)
-
-	}
-	to {
-		transform: translateY(0px);
-	}
-
-} */
 
 .section-three-robot {
 	overflow: hidden;
@@ -881,12 +872,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	-webkit-box-pack: center;
 	    -ms-flex-pack: center;
 	        justify-content: center;
-	/* transition: -webkit-clip-path 1s ease;
-	-o-transition: clip-path 1s ease;
-	transition: clip-path 1s ease;
-	transition: clip-path 1s ease, -webkit-clip-path 1s ease;
-	-webkit-transition: -webkit-clip-path 1s ease; */
-
 }
 
 .hide-img {

@@ -3890,7 +3890,7 @@ class Digital {
     }
 
     startHandAnimation(){
-        console.log('hey')
+
         this.watch.classList.add('rotateWatch')
         for(let i = 0; i < this.path.length; i++){
              this.path[i].classList.add('path')
@@ -3960,6 +3960,12 @@ class Circuit {
             
         }
     }
+    addClasses(){
+        let length = this.elements.length
+        while(length--){
+            this.elements[length].classList.add('animatePath')
+        }
+    }
     //2nd method ran
     getRandomPath(count){
         let i = 0
@@ -3993,6 +3999,7 @@ class Circuit {
     //1st method ran
     setDashArray(count){
         let index = this.getRandomPath(count)
+        if(wW < 768) return this.addClasses()
         let i = count
         this.getDashStroke(index)
                 
@@ -4013,7 +4020,8 @@ class Circuit {
         let el = this.animCircuit
         let duration = this.speed
         let length = el.length
-       
+        let countSpeed = isIOS() ? 8 : 4;
+
         function draw(){
             //Removes Animation
             if(!toggleAnimate.circuit){
@@ -4028,6 +4036,7 @@ class Circuit {
             for (let i = length - 1; i >= 0; i--) {
                 let dashArray = el[i].style.strokeDasharray
                 let dashOffset = el[i].style.strokeDashoffset
+
                 // StrokeDashoffset is less then 0 runs same direction 
                 if(dashOffset >= 0 && !duration[i].j){
                     duration[i].speed = 0
@@ -4035,7 +4044,7 @@ class Circuit {
                     iterator = 0
                 }
                 
-                const speed =  duration[i].speed += isIOS() ? 8 : 4;
+                const speed =  duration[i].speed += countSpeed
                 let iterator = dashOffset <= 0 ? -dist[i] : 0;
 
                 //Stops strokedasharray at about a 3rd to keep the length that size
@@ -4052,12 +4061,14 @@ class Circuit {
     }
 }
 
-const digital = new Digital()
-const circuit = new Circuit()
 
-    circuitToggle.toggleAnim = false
+
+circuitToggle.toggleAnim = false
 
 window.onload = function(e){
+    const digital = new Digital()
+    const circuit = new Circuit()
+
     circuit.setDashArray(6)
     // digital.startHandAnimation()
 
