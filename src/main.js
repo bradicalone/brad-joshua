@@ -4013,7 +4013,7 @@ class Circuit {
             
             this.addData(count)
     
-        //    if(i === 0) this.startAnimation()
+           if(i === 0) this.startAnimation()
         }
     }
     //Ran last
