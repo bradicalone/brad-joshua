@@ -4070,7 +4070,7 @@ window.onload = function(e){
     const circuit = new Circuit()
 
     circuit.setDashArray(1)
-    // digital.startHandAnimation()
+    digital.startHandAnimation()
 
  
     let newTechnologies = new Technologies();
