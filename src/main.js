@@ -1223,8 +1223,14 @@ StarryNight.prototype.loadImages = function(){
         }
     }
 };
-
-
+function setTechnologiesWidth(canvasWidth, svgHeight){
+    
+        let canvas = document.getElementById('techIcons');
+        if(wW < 768)  canvas.style.width = canvasWidth * .90 + 'px'
+        if(wW < 540)  canvas.style.width = canvasWidth * .75 + 'px'
+        canvas.style.top = svgHeight - canvas.getBoundingClientRect().height + 'px'
+    
+}
 var Technologies = function() { 
     var svgPageWidth =  _('svg-page').getAttribute('width')
     var svgPageHeight = _('svg-page').getAttribute('height')
@@ -1240,6 +1246,8 @@ var Technologies = function() {
     this.icons;
     this.j = 0
     var newTechnologies = this
+    //Sets canvas width again
+    if(wW < 768) setTechnologiesWidth(this.width, svgPageHeight)
     this.data = {
         addBodyData:  function(){
     
@@ -1280,7 +1288,6 @@ var Technologies = function() {
         var src = ["images/top-head."+ext, "images/face-body."+ext, "images/book."+ext, "images/full-body."+ext]
 
         if(width){
-
             var imgWidth = [284.5 ,400, 320.96, 400]
             var imgHeight = [170.9, 483.7, 226.8, 564.66]
         }else{
@@ -1365,7 +1372,6 @@ var Technologies = function() {
 }
 
 Technologies.prototype.rotateHead = function(rotate, pos){
-
     var img = this.bodyData
     this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
     this.ctx.drawImage(img[1].img,  pos.x, pos.y, img[1].width, img[1].height) //Face body
@@ -1725,7 +1731,15 @@ function getPos(ele){
         centeredLeft: elemLeft
     }
 };
-
+function adjustButton(){
+    _('line')[0].setAttribute('width', '35')
+    _('line')[0].setAttribute('x', '10.5')
+    _('line')[0].setAttribute('y', '25')
+    _('line')[1].setAttribute('width', '35')
+    _('line')[1].setAttribute('x', '10.5')
+    _('line')[1].setAttribute('y', '25')
+    _('x-circle').setAttribute('r', '22')
+}
 
 //Different screen sizing , elements adjust to it
 function adjustElements(){
@@ -1745,6 +1759,7 @@ function adjustElements(){
     }
 
     if(wW <= 615){
+        adjustButton()
          document.getElementById('path').setAttribute('d', pathD768)
         _('path').setAttribute('values', animate768)
         _('path').setAttribute('keyTimes', smallKeyTimes)
@@ -1762,7 +1777,6 @@ function adjustElements(){
             
     }else {
         if(wH > 840){
-      
             svg.setAttribute("viewBox", "0 0 "+ " "+svgWidth + " " + svgHeight); 
             svg.setAttribute("width", svgWidth)
             svg.setAttribute("height", svgHeight)
@@ -1784,7 +1798,7 @@ function adjustElements(){
             var groupName = el.classList[0];
       
             if(groupName === 'photo'){
-                var canvas = document.getElementById('slot-machine');
+ 
                 document.getElementById('canvas-area').setAttribute('transform','translate(157, 0)');
               
                 Array.prototype.forEach.call(el.children,function(elem, i){
@@ -1992,9 +2006,20 @@ function adjustElements(){
             if(groupName === 'technologies'){
                 var items = el.children[0].children[0]
                 var canvasArea = el.children[1]
-
+                // if(wW < 768){
+                //     setTimeout( ()=>{
+                //         let canvas = document.getElementById('techIcons');
+           
+                //         canvas.style.width = (canvas.getBoundingClientRect().width * .85) + 'px'
+                //         let svgHeight = document.getElementById('back-two').getBoundingClientRect().height
+                //         canvas.style.top = svgHeight - canvas.getBoundingClientRect().height + 'px'
+   
+                //     }, 1000)
+                    
+                // }
                 if(wW < 650 && wH < 655){
                     var bottom = ( svg.getAttribute('height') - 370 ) / 2
+                    console.log(bottom)
                     items.setAttribute('y', bottom)
                     items.setAttribute('x', 5)
                 }
@@ -2002,6 +2027,10 @@ function adjustElements(){
         })
     }  
 };
+
+
+
+
 
 
 if(wW < 970 || wH < 800){
@@ -2026,6 +2055,7 @@ function placeCloseButton(){
     _('close-btn').style.transform = 'translateX('+ (btnPos.mainSvg.width - 56 )+'px)'
 }
 placeCloseButton();
+
 
 
 function hoverMap(){
@@ -2548,6 +2578,11 @@ var robotSection = function(e){
                         //Stops typed text from running only when photo stops into place
                         _('text-field').textContent = ''
                         updateText.updateImgText(this.images[0]) //Starts the typed text function
+
+                        if ( _('button-inlarge').style.opacity !== '1' ){
+                
+                            _('button-inlarge').style.opacity = 1
+                        }
 
                         this.cloneImage(this.images[0]) 
                     } 
@@ -3386,7 +3421,7 @@ _('buttons').addEventListener('click',function(e){
     }
 });
 
-document.getElementById('button-inlarge').addEventListener('click', (e) => {
+_('button-inlarge').addEventListener('click', (e) => {
     imgInlarge.showImage('designVisible')
 })
 
@@ -3575,8 +3610,12 @@ function startRobotFlight(){
         total: 2000,
     }
     const subtractRay = () => {
+      
+        console.log(_('rec-clip').style.transform )
         _('left-text-panel').removeAttribute('clip-path')
         _('rec-clip').style.transform = "translate(485px, 520px)"
+       
+   
     }
     const getStrokeLength = () => {
         let i = graphs.length
@@ -3625,6 +3664,8 @@ function startRobotFlight(){
     }
 
     const startAnimateGraph = () =>{
+        if( _('rec-clip').style.transform ) return
+
         recClip.style.transform = 'translate(0px, 0px)'
         _('graph-clipping').classList.add('show-graphs')
 
@@ -3716,9 +3757,7 @@ class Navigation {
         window.scroll(0, y)
         if(progress < 1){
             requestAnimationFrame(this.animateScroll)
-        }else return navToggle.toggle = true
-            
-            
+        }else return navToggle.toggle = true  
     }
 
     toggleOpenBtn(){
@@ -3736,7 +3775,6 @@ class Navigation {
         if(e.target.className === 'contact-modal') return
         const regEx = /(\w+\-\w+)\-\w+/ig
         const sectionId = e.target.className.replace(regEx,"$1")
-
         let scrollToElem = this.getScrolltoElement(sectionId,regEx).el
         let index = this.getScrolltoElement(sectionId,regEx).index
         let elDist = this.getDistance(scrollToElem, index).top
@@ -3747,19 +3785,14 @@ class Navigation {
         requestAnimationFrame(this.animateScroll)
     }
     scrollTo768(e){
-        
-        
         let targetBtn = e.target.parentNode.parentNode
-        console.log(targetBtn)
-        
         
         if(targetBtn.hasAttribute('style')){
             return this.toggleOpenBtn()
         } 
         this.toggleOpenBtn()
         targetBtn.style.pointerEvents = 'auto'
-        targetBtn.style.transform = `translateX(${-130}px)`
-   
+        targetBtn.style.transform = `translateX(${-132}px)`
     }
 
     controller(){
@@ -3786,15 +3819,14 @@ const toggleAnimate = {
     flightStars: true,
     circuit: true
 }
-// circuitToggle.toggleAnim = false
+
 const robot = new robotSection('event');
 const robotFlight = startRobotFlight();
 
 
 const triggerStars = (e) => {
-    console.log(e.type)
     var update = robot[1](e).update
-    var star_count = 25
+    var star_count = wW > 540 ? 25 : 15
     var makeStars = robot[1]()
     makeStars.createStars(star_count, update)
 }
@@ -3802,7 +3834,7 @@ const triggerStars = (e) => {
 class ScrollAnimate extends Navigation {
     constructor(){
         super()
-        this.sections = document.querySelectorAll('.section-three-robot, #section-five-web, #section-one-digital, #section-two-popups')
+        this.sections = document.querySelectorAll('#section-one-digital, #section-two-popups, .section-three-robot, #section-five-web  ')
     }
     checkElemTop(e){
         let length = this.sections.length
@@ -3816,7 +3848,11 @@ class ScrollAnimate extends Navigation {
             //Digital Hand
             if(length === 0){
 
-                if(elmBottom < 100)toggleAnimate.circuit = false
+                if(elmBottom < 300){
+                    if(wW < 768) document.getElementById('digital_shake').style.willChange = "auto"
+                    digital.removeDigitalAnimation()
+                    toggleAnimate.circuit = false
+                }
             }
             //Map
             if(length === 1){
@@ -3837,7 +3873,7 @@ class ScrollAnimate extends Navigation {
                     
                     toggleAnimate.stars = false
                     toggleStars.toggle = false
-                    // triggerStars(e)
+                    triggerStars(e)
                 }
                 //Page out of view start stop animate
                 if( !toggleAnimate.stars  &&  (elmTop > elmHeight || elmBottom <= 0) ){
@@ -3847,27 +3883,34 @@ class ScrollAnimate extends Navigation {
             }
             //Flying Robot / Graph element
             if(length === 3){
-                
+             
+                if(elmTop < elmHeight){
+                    
+                    if(!_('floating_robot').style.willChange){
+                        _('floating_robot').style.willChange = 'transform'
+                    }
+                    
+                }
+
                 if(elmTop < elmHeight / 2 && elmBottom >= elmHeight && toggleAnimate.flightStars){
                     toggleRobot.flight = false
                     toggleAnimate.flightStars = false
                     requestAnimationFrame( robotFlight.drawBurners )
                     robotFlight.flyIntoPlace.createStars('up')
                     requestAnimationFrame(robotFlight.flyIn)
-
                 }
                 if( !toggleAnimate.flightStars  &&  (elmTop > elmHeight - 75 || elmBottom <= 0) ){
-
+                    
                     //Removes ray
-                    _('rec-clip').style.display = "none"
+                    _('floating_robot').style.willChange = 'auto'
+                    // _('rec-clip').style.display = 'none'
                     toggleAnimate.flightStars = true
                     toggleRobot.flight = true
                 }
             } 
         }
     }
-
-   
+  
     scroll(){
         window.addEventListener('scroll', (e) => {
             // If nav item is clicked that scroll event will run and not trigger this scroll event
@@ -3875,7 +3918,6 @@ class ScrollAnimate extends Navigation {
 
                 this.checkElemTop(e)
             }
-           
         })
     }
 }
@@ -3891,13 +3933,14 @@ class Digital {
 
     startHandAnimation(){
 
+        document.getElementById('digital_shake').classList.add('shake-hand')
         this.watch.classList.add('rotateWatch')
-        for(let i = 0; i < this.path.length; i++){
-            console.log(this.path[i].getTotalLength())
-             this.path[i].classList.add('path')
-        }
-        //Removes animation after 4 intervals 
-        setTimeout( ()=> { this.removeDigitalAnimation()},15100)
+        setTimeout( ()=>{
+            for (let i = 0; i < this.path.length; i++){
+                if (i < 3) _('circle-path')[i].style.opacity = 1
+                this.path[i].classList.add('path')
+           }
+        }, 2000)  
     }
     removeDigitalAnimation(){
         this.watch.classList.remove('rotateWatch')
@@ -3910,12 +3953,13 @@ class Digital {
 const circuitToggle = {
     toggleAnim: true
 }
-
-class Circuit {
+//brad-joshua
+class Circuit extends Digital{
     constructor(){
+        super()
         this.animCircuit = _('animate-circuit')
         this.startAnimation = this.startAnimation.bind(this)
-        this.speed = []
+        this.data = []
         this.elements = []
         this.index = []
         this.pathLength = []
@@ -3927,6 +3971,7 @@ class Circuit {
         for (var i = 0 ; i < el.points.numberOfItems;i++) {
             var pos = el.points.getItem(i);
             if (i > 0) {
+                
                 totalLength += Math.sqrt(Math.pow((pos.x - prevPos.x), 2) + Math.pow((pos.y - prevPos.y), 2));
             }
             prevPos = pos;
@@ -3935,8 +3980,9 @@ class Circuit {
     }
     //SVG .getTotalLength() fix
     getSvgEementLength(el){
-        const constructor = el.constructor
 
+        const constructor = el.constructor
+       
         switch (constructor) {
             case SVGPolylineElement: return this.getSvgPolylineLength(el);
             case SVGLineElement: return ((x1, x2, y1, y2) => Math.sqrt( (x2-=x1)*x2 + (y2-=y1)*y2 ))(el.getAttribute('x1'), el.getAttribute('x2'),
@@ -3947,17 +3993,12 @@ class Circuit {
     }
     //3rd method ran
     getDashStroke(el){
-
         let length = el.length
+      
         while(length--){
             let index = el[length]
-            try{
-                // Fix for SVG.getTotalLength()  not working on some paths. 
-                this.pathLength.unshift( this.getSvgEementLength(_('animate-circuit')[index]) )
-            }catch(err){
-                console.log(err)
-            }
-            
+            // Fix for SVG.getTotalLength()  not working on some paths. 
+            this.pathLength.unshift( this.getSvgEementLength(_('animate-circuit')[index]) )
         }
     }
     addClasses(){
@@ -3967,67 +4008,86 @@ class Circuit {
         }
     }
     //2nd method ran
-    getRandomPath(count){
-
+    getRandomPath(paths){
         let i = 0
-        let length = count 
- 
-        while(i < length){
+        let length = paths
 
+        while(i < length){
             // item is the long-path which is at index 0 if count === 1, else run random 
-            let item = Math.floor( Math.random() * 10 )
+            let item = paths === 1 ? 10 : Math.floor( Math.random() * 10 )
 
             //Checks first to make sure no duplicate items in array
             let notInArray = this.index.indexOf(item) === -1
-           
+
             if(notInArray){
                 i++
                 this.index.push( item )
-                this.elements.push( _('animate-circuit')[item] )
-                
+                this.elements.push( this.animCircuit[item] )
             }
         }
 
         this.animCircuit = this.elements
         return this.index
-      
     }
     //4th method ran
     addData(index){
- 
-        this.speed.push({speed: 0, j: 0, delay: 25 * index})
+
+        while(index--){
+            this.data.push({speed: 0, j: 0, delay: index*150, start: 0, startTime: 0})
+        }
+        this.startAnimation()
     }
     //1st method ran
     setDashArray(count){
-        let index = this.getRandomPath(count)
-
-        let i = index.length
+        let paths = wW < 768 ? 1 : count 
+        if(wW < 768) this.startHandAnimation()
+        let index = this.getRandomPath(paths)
         this.getDashStroke(index)
-                
-        while(i--){
-   
-            this.animCircuit[i].style.stroke = 'orange'
-            this.animCircuit[i].style.strokeDashoffset = -this.pathLength[i]
-            this.animCircuit[i].style.strokeDasharray = this.pathLength[i]
-            
-            this.addData(count)
-    
-           if(i === 0) this.startAnimation()
+
+        while(paths--){
+            this.animCircuit[paths].style.stroke = 'orange'
+            this.animCircuit[paths].style.strokeDashoffset = -this.pathLength[paths]
+            this.animCircuit[paths].style.strokeDasharray = this.pathLength[paths]
         }
+        this.addData(wW < 768 ? 3 : 6)
     }
+    
     //Ran last
     startAnimation(){
+        let circle = _('circle-path')
         let dist = this.pathLength
         let el = this.animCircuit
-        let duration = this.speed
+        let data = this.data
         let length = el.length
-        let countSpeed = 5;
+        let countSpeed = 7;
+        let dataLength = data.length
+        let delay = 0
+      
+        function startCircleAnimation(timestamp){
 
-        function draw(){
+            for(let i = 0; i < dataLength; i++){
+
+                if(delay > data[i].delay){
+             
+                    if(!data[i].startTime) data[i].startTime = timestamp
+                    let run = timestamp - data[i].startTime 
+                    let prog = Math.min( run / 30000, 1)
+                 
+                    const {x, y} = el[0].getPointAtLength(dist[0] * prog);
+                    circle[i].style.transform = `translate(${x}px, ${y}px)`
+                    if(prog === 1) data[i].startTime = 0
+                }    
+            }
+            delay++
+
+            requestAnimationFrame(startCircleAnimation);
+        }
+
+        function startLineAnimation(){
             //Removes Animation
             if(!toggleAnimate.circuit){
                 let i = el.length
-
+           
                 while(i--){
                     el[i].removeAttribute('style')
                 }
@@ -4039,13 +4099,13 @@ class Circuit {
                 let dashOffset = el[i].style.strokeDashoffset
 
                 // StrokeDashoffset is less then 0 runs same direction 
-                if(dashOffset >= 0 && !duration[i].j){
-                    duration[i].speed = 0
-                    duration[i].j = 1
+                if(dashOffset >= 0 && !data[i].j){
+                    data[i].speed = 0
+                    data[i].j = 1
                     iterator = 0
                 }
                 
-                const speed =  duration[i].speed += countSpeed
+                const speed =  data[i].speed += countSpeed
                 let iterator = dashOffset <= 0 ? -dist[i] : 0;
              
                 //Stops strokedasharray at about a 3rd to keep the length that size
@@ -4056,24 +4116,21 @@ class Circuit {
 
                 el[i].style.strokeDashoffset = iterator + speed
             }
-            requestAnimationFrame(draw)
+            requestAnimationFrame(startLineAnimation)
         }
-        requestAnimationFrame(draw)
+        requestAnimationFrame(wW < 768 ? startCircleAnimation : startLineAnimation )
     }
 }
+const digital = new Digital()
+const circuit = new Circuit()
 
-
-
-circuitToggle.toggleAnim = false
 
 window.onload = function(e){
-    const digital = new Digital()
-    const circuit = new Circuit()
-
-    // circuit.setDashArray(6)
-    digital.startHandAnimation()
-
- 
+    setTimeout( () =>{
+        circuit.setDashArray(6) 
+    },300)
+    
+   
     let newTechnologies = new Technologies();
     newTechnologies.loadImages();
 
@@ -4099,7 +4156,6 @@ window.onload = function(e){
     robot[0].loadImages(); //then loades images into slider
 
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
-    
     
 }.bind(this);
 

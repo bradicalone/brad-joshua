@@ -77,7 +77,7 @@ section {
     overflow: hidden;
 	width: 100%;
 	height: 100%;
-	background:  #2d2d2d url("images/poly-background-darkBlue.png");
+	/* background:  #2d2d2d url("images/poly-background-darkBlue.png"); */
 }
 
 #digital_shake {
@@ -120,7 +120,7 @@ section {
 	 white-space: nowrap;
 	margin: 3px 0;
 	font: 600 24px "Oswald";
-	opacity: .6;
+	opacity: .8;
 }
 
 .container-lg {
@@ -257,12 +257,12 @@ section {
 	stroke: #c03d64;
   	stroke-dasharray: 100;
   	stroke-dashoffset: 180;
-  	animation: dash 2s infinite running;
+  	animation: dash 10s infinite running;
 }
 
 @keyframes dash {
   	from {
-    	stroke-dashoffset: 1200;
+    	stroke-dashoffset: 4200;
   	}
   	to 	{
     	stroke-dashoffset:0;
@@ -270,7 +270,6 @@ section {
 }
 
 #rotate_watch {
-
     transform-origin: 364px 100.4px;
 }
 
@@ -291,7 +290,7 @@ section {
 }
 
 
-#particle, .buttons, #slider_1_, #button-inlarge{
+#particle, .buttons, #slider_1_, .button-inlarge{
 	cursor: pointer;
 }
 
@@ -319,6 +318,10 @@ section {
 
 .design #click-icon {
 	width: 70px;
+}
+
+.icon-path {
+	fill: #FEB800;
 }
 
 foreignObject .popup-content h1 {
@@ -740,6 +743,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
     transform: translate(100%, -50%);
 }
 
+.button-inlarge {
+	opacity: 0;
+	transition: opacity .5s ease-in;
+}
+
 #star-canvas {
 	position: absolute;
 	background: #1a1d40;
@@ -832,6 +840,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	left: 50%;
     transform: translate(-50%);
 }
+
+
 
 .assembly-img-wrapper {
 	clip-path: url(#clip-screen);
@@ -1072,10 +1082,16 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	margin: 10px 0;
 	font: 400 56px "Oswald";
 }
+.comingSoon {
+	font: 42px 'Arial-BoldMT';
+}
 
 @media (max-width: 546px) {
 	#digital_shake {
 		top: 60px;
+	}
+	.circuit-container {
+		top: 540px !important;
 	}
 	.interactive-container .icon-wrap {
 		display: none;
@@ -1107,6 +1123,12 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	.content h1 {
 		font: 400 33px "Oswald" !important;
 	}
+	.graph-about{
+		font-size: 21px;
+	}
+	.graph-content {
+		font-size: 18.5px;
+	}
 	#section-one-digital .content p, #section-two-popups .content p {
 		font-size: 4vw;
 	}
@@ -1135,6 +1157,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		left: 5%;
 		position: relative;
 	}
+	
 }
 @media (min-width: 546px) and (max-width: 1025px){
 	.map-wrap {
@@ -1195,19 +1218,41 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		fill: #fff;
 	}
 	.nav-list button {
+		will-change: transform;
 		pointer-events: none;
 		background-color: black;
     	margin: 1px 0;
     	border-radius: 5px;
 		position: relative;
-		right: -130px;
+		right: -132px;
 		transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+	#digital_shake { 
+		will-change: transform;
+		animation: shake 1s 2 forwards;
+	}
+	@keyframes shake {
+		0%{
+			transform: translateY(0px) rotate(0deg);
+		}
+		50%{
+			transform-origin: top right;
+			transform: translateY(-25px) rotate(-10deg);
+		}
+		100%{
+			transform-origin: top left;
+			transform: translateY(0px) rotate(0deg);
+		}
+	}
+	.circle-path {
+		will-change: opacity;
+		opacity: 0;
+		transition: opacity 2s ease-in;
 	}
 	.circuit-container {
 		max-width: 1300px;
-
 		position: absolute;
-		top: 89%;
+		top: 786px;
 		width: 100%;
 		left: 19%;
 		transform: rotate(45deg) scale(1.4) translate(-50%, -50%);
@@ -1234,6 +1279,9 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	.svg-photo-container .content h1{
 		margin: 0;
 		font-size: 37px !important;
+	}
+	#techIcons {
+		position: absolute;
 	}
 
 }
