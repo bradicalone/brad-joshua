@@ -1334,7 +1334,7 @@ var Technologies = function() {
         for(var i = 0; i < icons.length; i++){
             var w = !width ? icons[i].src.replace(/^([a-z\/]+)\/([a-z-?]+)-(\d\d)(.+)/ig,"$3") : icons[i].width
             var h = !width ? icons[i].src.replace(/^(.+)(\d{2})(.+)/ig,"$2") : icons[i].height
-            // console.log(w,h, i);
+
             load.push({
                 src: icons[i].src,
                 width: parseInt(w),
@@ -1555,7 +1555,7 @@ Technologies.prototype.loadImages = function(){
 function SvgPage(){
     var svgCloseButton = document.getElementsByClassName('close-btn svg-button')[0]
     var svgCircle = document.getElementsByClassName('svg-circle')[0]
-    var toggle, btnOpen, event;
+    var toggle, btnOpen;
     var hovermap = hoverMap()
     
     var removeGooey = function(e){
@@ -1563,7 +1563,6 @@ function SvgPage(){
             hovermap[1](e)
         },1400)
         
-        //    console.log( hovermap[1])
         //     var dist = hovermap[1](e)[0]; // Position distance of show-icon gooey
         //     hovermap[0]( dist, true )  // handler(e) function
 
@@ -1571,7 +1570,6 @@ function SvgPage(){
     this.start;
     //Page animated down removes circle to be animated again
     this.animateEnd = function(e){
-        console.log('hey you')
          _('interactive-container').style.pointerEvents = 'auto' 
 
         if(toggle){
@@ -1614,7 +1612,7 @@ function SvgPage(){
 
     // Open page function
     this.openModals = function(e){
-
+        
         try{
             btnOpen = e.target.id
         }catch(err){
@@ -1622,7 +1620,7 @@ function SvgPage(){
         }
   
         _('interactive-container').style.pointerEvents = 'none' 
-        event = e
+        event = e;
         _(btnOpen)[0].style.display = 'block'
         closeButtonShow(-56)
         //Google 'Do Hyeon' font bug, function has to be ran again in view
@@ -1657,13 +1655,13 @@ function SvgPage(){
                 document.getElementsByClassName(btnOpen)[1].parentElement.classList.remove('showCanvas')
                  
             })
-            
         }else{
             toggle = false;
 
             requestAnimationFrame(function(timestamp){
                 this.speed = 600;
                 this.animateCircle(timestamp, btnOpen)
+              
             }.bind(this))
 
             svgCloseButton.addEventListener('click', function(e){
@@ -1681,7 +1679,7 @@ function SvgPage(){
                     document.getElementsByClassName(btnOpen)[0].style.display = 'none'
                     document.querySelector('g.'+btnOpen+' .items').classList.remove('showCanvas')
                     // document.getElementsByClassName(btnOpen)[1].parentElement.classList.remove('showCanvas')
-                },1900)
+                },1100)
             });
         }
     }.bind(this);
@@ -1712,8 +1710,6 @@ function SvgPage(){
 };
 //Add to window object to be used for html page onend function
 window.svgPage = new SvgPage();
-
- 
 
 function getPos(ele){
         
@@ -2006,20 +2002,9 @@ function adjustElements(){
             if(groupName === 'technologies'){
                 var items = el.children[0].children[0]
                 var canvasArea = el.children[1]
-                // if(wW < 768){
-                //     setTimeout( ()=>{
-                //         let canvas = document.getElementById('techIcons');
-           
-                //         canvas.style.width = (canvas.getBoundingClientRect().width * .85) + 'px'
-                //         let svgHeight = document.getElementById('back-two').getBoundingClientRect().height
-                //         canvas.style.top = svgHeight - canvas.getBoundingClientRect().height + 'px'
-   
-                //     }, 1000)
-                    
-                // }
+
                 if(wW < 650 && wH < 655){
                     var bottom = ( svg.getAttribute('height') - 370 ) / 2
-                    console.log(bottom)
                     items.setAttribute('y', bottom)
                     items.setAttribute('x', 5)
                 }
@@ -2550,7 +2535,7 @@ var robotSection = function(e){
             if(!this.start) this.start = timestamp
 
             var runtime = timestamp - this.start
-            var progress = Math.min(runtime / 700, 1)
+            var progress = Math.min(runtime / 600, 1)
             
             this.images[0].style.transform = 'translate('+ (this.imgStart - (this.dist*progress) )+'px, -50%)'
            
@@ -3058,7 +3043,6 @@ class RollerUnit extends AssemblyLine {
         }
         //Removes prior values in arrays
         this.dist.splice(0,3), this.beginPos.splice(0,3)
-        console.log(this.dist, this.beginPos)
     }
     //Updates sliders positions
     updatePos(){
@@ -3205,9 +3189,11 @@ class InLargeImg extends RollerUnit {
     }
     
     addClickListener(){
+        console.log('listener added')
         _('img-inlarge-container').addEventListener('click', this.imageClose); 
     }
     removeClickListener(){
+        console.log('removed click listener')
         _('img-inlarge-container').removeEventListener('click', this.imageClose); 
     }
     checkForDuplicates(clssName){
@@ -3290,9 +3276,10 @@ class InLargeImg extends RollerUnit {
     }
     // Removes images 
     imageClose(e){
-        this.removeClickListener()
+       console.log( e.target.tagName)
+        
         if(e.target.tagName !== 'IMG'){
-
+            this.removeClickListener()
             this.removeImg(e)
         }
     }
@@ -3400,7 +3387,6 @@ let imgInlarge = new InLargeImg();
 rollerUnit.positionForiegnObject(imgInlarge);
 
 _('img-scale').addEventListener('mousedown', (e) => {
-    
     imgInlarge.mouseDown(e)
 }, true);
 
@@ -3610,12 +3596,8 @@ function startRobotFlight(){
         total: 2000,
     }
     const subtractRay = () => {
-      
-        console.log(_('rec-clip').style.transform )
         _('left-text-panel').removeAttribute('clip-path')
         _('rec-clip').style.transform = "translate(485px, 520px)"
-       
-   
     }
     const getStrokeLength = () => {
         let i = graphs.length
@@ -3765,7 +3747,7 @@ class Navigation {
         while(i--){
           
             if(this.navItems[i].style.transform){
-                console.log(this.navItems[i].removeAttribute('style'))
+               this.navItems[i].removeAttribute('style')
             }
         }
     }
