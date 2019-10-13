@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "startDev": "NODE_ENV=development nodemon -e js,hbs,html,css,json ./bin/www",
+    "startDev": "NODE_ENV=development nodemon -e js,hbs,html,css,json webpack --env development",
     "start": "NODE_ENV=production node ./bin/www",
     "build:dev": "webpack --env development",
     "build:prod": "webpack -p --env production",

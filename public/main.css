@@ -256,8 +256,8 @@ section {
 .path {
 	stroke: #c03d64;
   	stroke-dasharray: 100;
-  	stroke-dashoffset: 180;
-  	animation: dash 10s infinite running;
+	stroke-dashoffset: 180;
+  	animation: dash 8s 1 forwards;
 }
 
 @keyframes dash {
@@ -841,8 +841,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
     transform: translate(-50%);
 }
 
-
-
 .assembly-img-wrapper {
 	clip-path: url(#clip-screen);
 }
@@ -1100,8 +1098,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
     flex-direction: column;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
-    /* margin-bottom: 50px;
-    padding-top: 50px; */
+
 }
 
 @media (max-width: 546px) {
@@ -1144,8 +1141,13 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	.graph-about{
 		font-size: 21px;
 	}
+	.sm-screen-text{
+		font-family:'PTSans-Narrow';
+		fill:#FFFFFF;
+		font-size: 21px;
+	}
 	.graph-content {
-		font-size: 18.5px;
+		display: none;
 	}
 	#section-one-digital .content p, #section-two-popups .content p {
 		font-size: 4vw;
@@ -1176,6 +1178,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		position: relative;
 	}
 	
+}
+@media (min-width: 546px){
+	.sm-screen-text{
+		display: none;
+	}
 }
 @media (min-width: 546px) and (max-width: 1025px){
 	.map-wrap {
@@ -1245,7 +1252,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		right: -132px;
 		transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 	}
-	#digital_shake { 
+.shake-hand { 
 		will-change: transform;
 		animation: shake 1s 2 forwards;
 	}
@@ -1304,6 +1311,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 }
 @media (min-width: 768px){
+
 	.map-paths {
 		display: block;
 	}

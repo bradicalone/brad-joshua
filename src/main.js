@@ -1242,10 +1242,11 @@ var Technologies = function() {
     this.height = this.canvas.height = svgPageHeight;
     this.start = 0;
     this.start;
-    this.bodyData = []
+    this.duration = 1000;
+    this.bodyData = [];
     this.icons;
-    this.j = 0
-    var newTechnologies = this
+    this.j = 0;
+    var newTechnologies = this;
     //Sets canvas width again
     if(wW < 768) setTechnologiesWidth(this.width, svgPageHeight)
     this.data = {
@@ -1432,10 +1433,13 @@ Technologies.prototype.draw = function(timestamp){
     
   
     if(!this.start)
+
         this.start = timestamp
         var runtime = timestamp - this.start
-        var progress = Math.min(runtime / 1000, 1)
-
+        var progress = Math.min(runtime / this.duration, 1)
+        
+        
+        
         if(progress < 1 && data.j <= 1){
       
             if(width){
@@ -1454,10 +1458,11 @@ Technologies.prototype.draw = function(timestamp){
                 var rotate = data.rotate*progress;
                 this.rotateHead(rotate,pos)
             }
-            //PUsh up book
+            //Push up book
             if(data.j === 1){
+                this.duration = 500
 
-                data.scale = .5 + (.55 * progress)
+                data.scale = .5 + (.55 * progress )
                 this.drawBook(data,pos)
             }
         }else{
@@ -3923,6 +3928,10 @@ class Digital {
                 this.path[i].classList.add('path')
            }
         }, 2000)  
+        setTimeout( ()=>{
+            this.startAnimation()
+            this.removeDigitalAnimation()
+        }, 10000) 
     }
     removeDigitalAnimation(){
         this.watch.classList.remove('rotateWatch')
@@ -4017,7 +4026,7 @@ class Circuit extends Digital{
         while(index--){
             this.data.push({speed: 0, j: 0, delay: index*150, start: 0, startTime: 0})
         }
-        this.startAnimation()
+        if(wW > 768) this.startAnimation()
     }
     //1st method ran
     setDashArray(count){
