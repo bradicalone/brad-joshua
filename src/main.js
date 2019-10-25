@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
 import Photo from './photo.js';
-
+console.log('hey')
 /******  GLOBAL VARIABLES  *******/ 
 const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
                  "M565.1,0v900H182.7c0,0-44-72.5-44-191.7c0-107.5,121.8-396.1,121.8-533.8C260.5,41,245.9,0,245.9,0H565.1z;"+
