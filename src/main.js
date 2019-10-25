@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import Photo from './photo.js';
 
-console.log(Photo)
+
 
 /******  GLOBAL VARIABLES  *******/ 
 const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
@@ -2693,16 +2693,6 @@ function DesignSlider() {
         _('btnContainer').style.width = this.rec.width + addedWidth +'px'
         _('btnContainer').style.transform = 'translate('+ x + 'px,' + y + 'px)'
     }
-    // this.setRobotHeight = function(){
-      
-    //     console.log('window.innerHeight:', window.innerHeight)
-    //     if(wW > 768 && window.innerHeight < 866){
-    //         robot.style.height = window.innerHeight - 50 + 'px'
-    //         this.setEllipseAttributes()
-    //         this.setImgContainer()
-    //         this.setButtonLocation()
-    //     }
-    // }
     return function(){
         // return [this.setRobotHeight()]
         return [this.setEllipseAttributes(),this.setImgContainer(),this.setButtonLocation()]
@@ -2711,14 +2701,11 @@ function DesignSlider() {
 }
 
 window.addEventListener('resize',function(e){
-
     var updateRobot = robotSection(e)
-
     var designSlider = new DesignSlider()
     designSlider()  //updates canvas size
     updateRobot[1]()  //updates button, image location , attributes of robot
     
-
 });
 
 // **** ASSEMBLY LINE SECTION ****
@@ -3312,7 +3299,7 @@ class InLargeImg extends RollerUnit {
         this.container.style.display = 'flex'
         this.container.style.opacity = 1
     }
-                                            // **  REMOVE ANIMATECLIPPATH IF I DON'T REALLLY HAVE TO USE IT FOR FIREFOX **
+                         // **  REMOVE ANIMATECLIPPATH IF I DON'T REALLLY HAVE TO USE IT FOR FIREFOX **
     //Firefox only
     animateClipPath(timestamp){
         if(!this.start) this.start = timestamp
@@ -3955,10 +3942,6 @@ class Digital {
     }
 }
 
-const circuitToggle = {
-    toggleAnim: true
-}
-//brad-joshua
 class Circuit extends Digital{
     constructor(){
         super()
@@ -4126,29 +4109,9 @@ class Circuit extends Digital{
         requestAnimationFrame(wW < 768 ? startCircleAnimation : startLineAnimation )
     }
 }
-const digital = new Digital()
-const circuit = new Circuit()
+const digital = new Digital();
+const circuit = new Circuit();
 
-class NotFound {
-    constructor(){
-        
-        this.svgElement = _('not-found-letters')
-        this.foreignObject = _('error-status')
-    }
-    getCurrentSvgPos(){
-        return this.svgElement.getBBox()
-    }
-    updateForeignObject(){
-        // let pos = this.getCurrentSvgPos()
-        
-        console.log('pos:', pos)
-        this.foreignObject.setAttribute('x', pos.x )
-        this.foreignObject.setAttribute('y', pos.y + 25 )
-    }
-}
-const notFound = new NotFound()
-// notFound.updateForeignObject()
-console.log(notFound)
 // ReactDOM.render(<Photo />, document.getElementById('test'));
 
 window.onload = function(e){
@@ -4168,7 +4131,7 @@ window.onload = function(e){
 
     document.querySelector('.technologies .stop-canvas').addEventListener('click', function(){
         Technologies.prototype.toggle = false
-        requestAnimationFrame(newTechnologies.draw.bind(newTechnologies)) 
+        requestAnimationFrame(newTechnologies.draw.bind(newTechnologies))
     }.bind(this));
 
     var starryNight = new StarryNight()
