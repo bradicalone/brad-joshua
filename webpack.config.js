@@ -2,15 +2,12 @@ const path = require('path');
 //Basically this file is a Node script
 
 module.exports = (env) => {
-    console.log(env)
+    console.log('enviroment: ',env)
     const isProduction = env === 'production';
     
     return {
+        mode: env,
         entry: './src/main.js',
-        output: {
-            path: path.join(__dirname, 'public'),
-            filename: 'bundle.js'
-        },
         module: {
             rules: [{
                 loader: 'babel-loader',
@@ -22,6 +19,9 @@ module.exports = (env) => {
         devServer: {
             contentBase: path.join(__dirname, 'public')
         },
-        mode: env
+        output: {
+            path: path.join(__dirname, 'public'),
+            filename: 'bundle.js',
+        }  
     }
-}
+};

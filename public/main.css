@@ -10,7 +10,8 @@ html, body {
 }
 
 body {
-	background: #1a1d40;
+	/* background: #1a1d40; */
+	background: #141631;
 	margin: 0;
 	padding: 0;
 	-webkit-text-size-adjust: 100%;
@@ -81,8 +82,11 @@ section {
 }
 
 #digital_shake {
-	/* display: none; */
-	position: relative;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+    top: 50px;
+    max-width: 1050px;
 }
 
 #section-two-popups .left-background {
@@ -403,10 +407,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 .finger-scale {
-	animation: scale .4s ease-in 2s 10 alternate forwards;
+
+	animation: scaleFinger .4s ease-in 2s 10 alternate forwards;
 }
 
-@keyframes scale {
+@keyframes scaleFinger {
 	0% {
 		transform: scale(1);
     	-webkit-transform: scale(1);
@@ -711,6 +716,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 #robot-svg {
 	width: 100%;
+	height: 100%;
 	position: absolute;
 	bottom: 0;
 	left: 49.5%;
@@ -839,6 +845,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	max-width: 1175px;
 	left: 50%;
     transform: translate(-50%);
+}
+
+.assembly-line-svg, #graph-svg {
+	width: 100%;
+	max-width: 1175px;
 }
 
 .assembly-img-wrapper {
@@ -1031,9 +1042,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	to {
 		transform: translateY(-45px) scale(.9);
 	}
-	
 }
-
 
 .show-graphs {
 	animation: graphOpac .5s ease-in forwards 1.3s;
@@ -1063,12 +1072,14 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 #photo-robot {
 	width: 100%;
+	height: 100%;
 }
 
 .svg-photo-container {
 	display: flex;
     justify-content: center;
-    width: 100%;
+	width: 100%;
+	height: 100%;
     position: absolute;
     bottom: 0;
 }
@@ -1090,7 +1101,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 #contact .content {
-
     position: relative;
     color: #000000;
     display: flex;
@@ -1098,11 +1108,40 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
     flex-direction: column;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
+}
 
+/*** 404 PAGE  ***/
+
+#house-404, #font-404, .font-404, .house-404, #page-404 {
+	width: 100%;
+	height: 100%;
+}
+
+#page-404 {
+	background: #1F1C28;
+}
+
+.font-404 {
+	position: absolute;
+	top: 0px;
+}
+
+.error-url {
+	font-family:'ArialMT';
+	font-size:34px;
+	fill:#E5FEE4;
+}
+
+.error-text a {
+	font-family:'ArialMT';
+	font-size:34px;
+	fill: blue;
+	text-decoration: underline;
 }
 
 @media (max-width: 546px) {
 	#digital_shake {
+		position: relative;
 		top: 60px;
 	}
 	.circuit-container {
@@ -1194,6 +1233,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		font: 400 64px "Oswald";
 	}
 }
+
 @media (max-height: 700px) {
 	.design .about-content .languages {
 		margin: 0;
@@ -1218,6 +1258,15 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		display: -ms-flexbox;
 		display: flex;
 	 }
+}
+@media (min-width: 768px) and (max-height: 700px){
+	.assembly-line-svg, #graph-svg {
+		width: 75%;
+	}
+	.svg-assembly-wrapper, #section-five-web .container-lg {
+		display: flex;
+		justify-content: center;
+	}
 }
 @media (max-width: 768px){
 	.nav-list {
@@ -1311,7 +1360,9 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 }
 @media (min-width: 768px){
-
+	.circle-path {
+		display: none;
+	}
 	.map-paths {
 		display: block;
 	}
@@ -1334,7 +1385,13 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		font-size: 35px;
 	}
 }
-@media (min-height: 650px) and (min-width: 768px){
+/* @media (max-height: 865px) and (min-width: 768px){
+	#robot-svg {
+		height: 100%;
+	}
+} */
+/* @media (min-height: 650px) and (min-width: 768px){ */
+@media (min-width: 768px){
 	.section-three-robot .content {
 		font-size: 43px;
 		width: 100%;
@@ -1342,7 +1399,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		position: absolute;
 		justify-content: space-between;
 		left: 50%;
-		top: 115px;
+		top: 65px;
 		transform: translate(-50%);
 		padding: 0 22px;
 	}
@@ -1363,7 +1420,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 	@supports (-webkit-marquee-repetition:infinite) and (object-fit:fill) {
 		.section-three-robot .content{
-				top: 220px !important;
+				top: 150px !important;
 			}
 		}
 }
@@ -1375,15 +1432,18 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		left: 50%;
 		transform: translate(-50%);
 	}
+	#robot-svg {
+		height: auto;
+	}
 }
 @media (min-width: 1025px) {
 	/* Keeps robot same size and centered at large screens*/
-	#robot-svg {
+	/* #robot-svg {
 		width: 1026.2px;
 		height: 856.7px;
 		left: 49.5%;
 		transform: translate(-50%);
-	}
+	} */
 	#section-four-web .content {
 		font-size: 35px;
 		width: 100%;
@@ -1395,8 +1455,15 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 	}
 	#section-four-web .content h1 {
+		position: absolute;
 		margin: 0px 25px;
 		font: 400 64px "Oswald";
+	}
+	#section-four-web .content h1:nth-child(1){
+		left: calc(50% - 325px);
+	}
+	#section-four-web .content h1:nth-child(2){
+		left: calc(50% + 55px);
 	}
 
 	#section-two-popups .content {

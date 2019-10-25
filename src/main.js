@@ -1,4 +1,9 @@
-"use strict";
+import React from 'react';
+import ReactDOM from 'react-dom'
+import Photo from './photo.js';
+
+console.log(Photo)
+
 /******  GLOBAL VARIABLES  *******/ 
 const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
                  "M565.1,0v900H182.7c0,0-44-72.5-44-191.7c0-107.5,121.8-396.1,121.8-533.8C260.5,41,245.9,0,245.9,0H565.1z;"+
@@ -20,10 +25,6 @@ let isIOS = function(){
 
 const wW = window.innerWidth;
 const wH = window.innerHeight;
-let lastDist;
-
-
-
 
 //Firefox Bug, transforms not working, so sets attribute to 0 instead
 if(isFirefox){
@@ -2662,9 +2663,11 @@ var robotSection = function(e){
 function DesignSlider() {
     var img_container = document.getElementsByClassName('image-container')[0]
     var img_container_rect = img_container.getBoundingClientRect()
+    let robot = document.getElementById('robot-svg');
     this.ellipse = document.getElementsByClassName('clip-ellipse')[0]
     this.rec = document.getElementsByClassName('screen-path')[0].getBoundingClientRect()
     this.sectionContainer = document.getElementsByClassName('section-three-robot')[0].getBoundingClientRect()
+
 
     var actualTop = this.rec.top - this.sectionContainer.top //when page not fully scrolled into view it's the actual top
    
@@ -2690,8 +2693,18 @@ function DesignSlider() {
         _('btnContainer').style.width = this.rec.width + addedWidth +'px'
         _('btnContainer').style.transform = 'translate('+ x + 'px,' + y + 'px)'
     }
+    // this.setRobotHeight = function(){
+      
+    //     console.log('window.innerHeight:', window.innerHeight)
+    //     if(wW > 768 && window.innerHeight < 866){
+    //         robot.style.height = window.innerHeight - 50 + 'px'
+    //         this.setEllipseAttributes()
+    //         this.setImgContainer()
+    //         this.setButtonLocation()
+    //     }
+    // }
     return function(){
-
+        // return [this.setRobotHeight()]
         return [this.setEllipseAttributes(),this.setImgContainer(),this.setButtonLocation()]
 
     }.bind(this)
@@ -2704,6 +2717,8 @@ window.addEventListener('resize',function(e){
     var designSlider = new DesignSlider()
     designSlider()  //updates canvas size
     updateRobot[1]()  //updates button, image location , attributes of robot
+    
+
 });
 
 // **** ASSEMBLY LINE SECTION ****
@@ -3639,8 +3654,8 @@ function startRobotFlight(){
         let runtime = timestamp - graphData.start
         let progress = Math.min(runtime / graphData.total, 1)
 
-        _('graph-percentage-top').textContent = Math.round( 0 + 90 * progress) + ' %'
-        _('graph-percentage-bottom').textContent = Math.round( 0 + 70 * progress) + ' %'
+        _('graph-percentage-top').textContent = Math.round( 0 + 90 * progress) + '%'
+        _('graph-percentage-bottom').textContent = Math.round( 0 + 70 * progress) + '%'
         _('graph-rect').style.transform = 'translate(' + (412 * progress) + 'px)' 
         drawPercentStroke(progress)
         
@@ -3660,7 +3675,6 @@ function startRobotFlight(){
         setTimeout( () => {
             requestAnimationFrame(animateGraph)
         }, 2500)
-       
     }
 
     const begin = {
@@ -4067,7 +4081,7 @@ class Circuit extends Digital{
                     const {x, y} = el[0].getPointAtLength(dist[0] * prog);
                     circle[i].style.transform = `translate(${x}px, ${y}px)`
                     if(prog === 1) data[i].startTime = 0
-                }    
+                }
             }
             delay++
 
@@ -4115,8 +4129,30 @@ class Circuit extends Digital{
 const digital = new Digital()
 const circuit = new Circuit()
 
+class NotFound {
+    constructor(){
+        
+        this.svgElement = _('not-found-letters')
+        this.foreignObject = _('error-status')
+    }
+    getCurrentSvgPos(){
+        return this.svgElement.getBBox()
+    }
+    updateForeignObject(){
+        // let pos = this.getCurrentSvgPos()
+        
+        console.log('pos:', pos)
+        this.foreignObject.setAttribute('x', pos.x )
+        this.foreignObject.setAttribute('y', pos.y + 25 )
+    }
+}
+const notFound = new NotFound()
+// notFound.updateForeignObject()
+console.log(notFound)
+// ReactDOM.render(<Photo />, document.getElementById('test'));
 
 window.onload = function(e){
+    // Help on page loads
     setTimeout( () =>{
         circuit.setDashArray(6) 
     },300)
@@ -4149,4 +4185,3 @@ window.onload = function(e){
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
     
 }.bind(this);
-
