@@ -1,5 +1,5 @@
 import React from 'react';
-console.log('photo is running for React');
+console.log('Photo is running for React');
 
 class Photo extends React.Component {
     constructor(){
