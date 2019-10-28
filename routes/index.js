@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let User = require('../models/user.model.js');
+// let User = require('../models/user.model.js');
 
 
 /* GET contact page. */
