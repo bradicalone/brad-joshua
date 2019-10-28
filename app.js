@@ -6,7 +6,7 @@ const logger = require('morgan');
 const hbs = require('hbs');
 const cors = require('cors');
 //need connection to connect to mongoose from db page
-const connection = require('./db/mongoose.js')
+// const connection = require('./db/mongoose.js')
 var index = require('./routes');
 var users = require('./routes/users');
 const app = express();
