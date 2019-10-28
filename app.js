@@ -4,16 +4,20 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const hbs = require('hbs');
-
+const cors = require('cors');
+//need connection to connect to mongoose from db page
+const connection = require('./db/mongoose.js')
 var index = require('./routes');
 var users = require('./routes/users');
+const app = express();
 
-var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

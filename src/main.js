@@ -1,6 +1,9 @@
+
 import React from 'react';
 import ReactDOM from 'react-dom'
-import Photo from './photo.js';
+import App from './App.js';
+
+ReactDOM.render(<App />, document.getElementById('photo-imgs'))
 
 /******  GLOBAL VARIABLES  *******/ 
 const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
@@ -2856,7 +2859,7 @@ class RollerUnit extends AssemblyLine {
 
     // Add and remove foreignObjects into slider
     foreinObjArr(){
-        // let length =  this.foreinObjs.length
+   
         let length =  this.foreinGroup.length
         let arr = new Array(length)
 
@@ -3187,18 +3190,16 @@ class InLargeImg extends RollerUnit {
         this.removeListener = this.removeListener.bind(this)
         this.mouseY = 0
         this.imageClose = this.imageClose.bind(this)
-        this.targetElem = this.targetElem
+        // this.targetElem = this.targetElem
         this.checkForDuplicates = this.checkForDuplicates
         this.moveElement = this.moveElement
         this.Y = 0
     }
     
     addClickListener(){
-        console.log('listener added')
         _('img-inlarge-container').addEventListener('click', this.imageClose); 
     }
     removeClickListener(){
-        console.log('removed click listener')
         _('img-inlarge-container').removeEventListener('click', this.imageClose); 
     }
     checkForDuplicates(clssName){
@@ -3225,7 +3226,7 @@ class InLargeImg extends RollerUnit {
                 
                 arr.push( this.foreinObjs[i].getBoundingClientRect().x )
                 groupArr.push(this.foreinObjs[i].parentNode)
-                
+           
             }
             // Scaling image only
             if ( this.foreinObjs[i].parentNode.getBoundingClientRect().x === elemX && this.toggleMoveElement){
@@ -3235,6 +3236,7 @@ class InLargeImg extends RollerUnit {
             if ( this.foreinObjs[i].getBoundingClientRect().x === elemX ){
                 this.checkForDuplicates('webVisible')
                 let imgNode = this.foreinObjs[i].childNodes[1];
+             
                 let clonedImg = imgNode.cloneNode(true)
                 return this.moveElement( clonedImg, 'webVisible' )  
             } 
@@ -3245,13 +3247,32 @@ class InLargeImg extends RollerUnit {
     }
     insertText(img){
         let imgContent = _('img-content')
+        let imgAlt = img.attributes[3].value
         let url = img.attributes[2].value
         let text = img.attributes[1].textContent
+
         imgContent.textContent = text
-        imgContent.innerHTML += '<br>'+'<a href="' + url + '"> ' + url + ' </a>'+'</br>'
+
+        if(img.attributes[2].name === 'data-link') {
+            imgContent.innerHTML += '<br>'+'<a href="' + url + '"> ' + url + ' </a>'+'</br>'
+        } else {
+            imgContent.innerHTML += '<br><p>' + imgAlt + ' </p>'+'</br>'
+        } 
     }
+
+    checkProperImgHeight(img){
+        let windowHeight = window.innerHeight;
+        // let imgCloseHeight = _('img-close').clientHeight;
+        let imgHeight = img.getBoundingClientRect().height
+        let contentHeight = _('img-content').getBoundingClientRect().height
+        console.log(windowHeight, imgHeight, contentHeight)
+    }
+
     moveElement(el, cls){
+        
+        console.log(cls)
         this.img = el //updates image to be used elsewhere 
+        this.checkProperImgHeight(el)
         el.classList.add(cls)
         let img_content = _('img-content')
         let fragment = document.createDocumentFragment();
@@ -3259,6 +3280,8 @@ class InLargeImg extends RollerUnit {
         this.imgWrap.insertBefore(fragment, img_content);
         this.imgWrap.classList.add('show-img')
         this.imgWrap.classList.remove('hide-img')
+
+      
     }
 
     removeImg(e){
@@ -3276,13 +3299,10 @@ class InLargeImg extends RollerUnit {
             
             _('img-content').textContent = ''
             this.img.parentNode.removeChild(this.img)
-     
         }
     }
     // Removes images 
     imageClose(e){
-       console.log( e.target.tagName)
-        
         if(e.target.tagName !== 'IMG'){
             this.removeClickListener()
             this.removeImg(e)
@@ -4110,7 +4130,13 @@ class Circuit extends Digital{
 const digital = new Digital();
 const circuit = new Circuit();
 
-// ReactDOM.render(<Photo />, document.getElementById('test'));
+const loadPhotoImg = (img) => {
+    const clonedImg = img.cloneNode(true)
+    clonedImg.className = ''
+    clonedImg.removeAttribute('style')
+    imgInlarge.checkForDuplicates('photoVisible')
+    imgInlarge.moveElement(clonedImg, 'photoVisible')
+}
 
 window.onload = function(e){
     // Help on page loads
@@ -4144,5 +4170,9 @@ window.onload = function(e){
     robot[0].loadImages(); //then loades images into slider
 
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
+
+    loadPhotoImg( _('photo-img') );
+    
     
 }.bind(this);
+
