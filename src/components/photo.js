@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {kake} from '../main.js';
-console.log('photo is running for react', kake);
+console.log('photo is running for react');
 
 class Photo extends React.Component {
     constructor(){
@@ -9,7 +9,8 @@ class Photo extends React.Component {
         this.state = {
             images: [],
             rightButton: document.getElementById('#right-arrow'),
-            leftButton: document.getElementById('#left-arrow')
+            leftButton: document.getElementById('#left-arrow'),
+            clipPath: document.getElementById('clipper')
         }
     }
 
@@ -17,23 +18,21 @@ class Photo extends React.Component {
         this.showPhoto()
     }
     showPhoto(){
-
+       console.log( this.state)
     }
     render(){
         return (
-            <g id="clipper">
+           
+            <g clipPath="url(#photo-img-clip)" id="clipper">
+        
             <clipPath id="photo-img-clip">
                     
                     <rect x="200" y="390" width="260" height="230" fill="aqua"></rect>
                     
             </clipPath>
-            
-            <foreignObject x="200" y="390" width="260" height="230">
-                <img src="/images/vintage-camera.jpg" className="photo-img" alt="Ecommerce used camera item" />
-            </foreignObject>
-
+            <rect x="200" y="390" width="660" height="230"></rect>
             </g>
-            
+           
         )
     }
 }

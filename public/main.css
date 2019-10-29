@@ -1079,7 +1079,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	height: 100%;
 }
 
-#clipper {
+#clippers {
+	-webkit-clip-path: url(#photo-img-clip);
 	clip-path: url(#photo-img-clip);
 }
 

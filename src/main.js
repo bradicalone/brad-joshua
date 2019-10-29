@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './App.js';
 
-console.log('updated four')
+console.log('updated six')
 
 ReactDOM.render(<App />, document.getElementById('photo-imgs'))
 
@@ -4158,7 +4158,7 @@ window.onload = function(e){
 
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
 
-    loadPhotoImg( _('photo-img') );
+    // loadPhotoImg( _('photo-img') );
     
     
 }.bind(this);
