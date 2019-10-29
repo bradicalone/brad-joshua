@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './App.js';
@@ -3909,7 +3908,6 @@ class ScrollAnimate extends Navigation {
                     
                     //Removes ray
                     _('floating_robot').style.willChange = 'auto'
-                    // _('rec-clip').style.display = 'none'
                     toggleAnimate.flightStars = true
                     toggleRobot.flight = true
                 }
