@@ -8,9 +8,9 @@ class Photo extends React.Component {
         super()
         this.state = {
             images: [],
-            rightButton: document.getElementById('#right-arrow'),
-            leftButton: document.getElementById('#left-arrow'),
-            clipPath: document.getElementById('clipper')
+            rightButton: document.getElementById('right-arrow'),
+            leftButton: document.getElementById('left-arrow'),
+            clipPath: document.getElementById('photo-body')
         }
     }
 
@@ -18,7 +18,7 @@ class Photo extends React.Component {
         this.showPhoto()
     }
     showPhoto(){
-       console.log( this.state)
+       console.log( this.state.clipPath.getBBox())
     }
     render(){
         return (
