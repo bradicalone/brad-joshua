@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './App.js';
 
-console.log('updated')
+console.log('updated new')
 
 ReactDOM.render(<App />, document.getElementById('photo-imgs'))
 
