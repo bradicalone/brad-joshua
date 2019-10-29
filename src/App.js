@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route} from "react-router-dom";
-import {kake} from './main.js';
-console.log('photo is running for react');
 
 import Photo from "./components/photo.js";
-// console.log('Photo:', Photo)
 
 function App() {
     return (
