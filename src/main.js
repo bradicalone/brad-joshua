@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './App.js';
 
-console.log('updated new')
+console.log('updated three')
 
 ReactDOM.render(<App />, document.getElementById('photo-imgs'))
 
@@ -3261,19 +3261,8 @@ class InLargeImg extends RollerUnit {
         } 
     }
 
-    checkProperImgHeight(img){
-        let windowHeight = window.innerHeight;
-        // let imgCloseHeight = _('img-close').clientHeight;
-        let imgHeight = img.getBoundingClientRect().height
-        let contentHeight = _('img-content').getBoundingClientRect().height
-        console.log(windowHeight, imgHeight, contentHeight)
-    }
-
     moveElement(el, cls){
-        
-        console.log(cls)
         this.img = el //updates image to be used elsewhere 
-        this.checkProperImgHeight(el)
         el.classList.add(cls)
         let img_content = _('img-content')
         let fragment = document.createDocumentFragment();
@@ -3281,8 +3270,6 @@ class InLargeImg extends RollerUnit {
         this.imgWrap.insertBefore(fragment, img_content);
         this.imgWrap.classList.add('show-img')
         this.imgWrap.classList.remove('hide-img')
-
-      
     }
 
     removeImg(e){
