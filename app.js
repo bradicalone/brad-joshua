@@ -6,12 +6,9 @@ const logger = require('morgan');
 const hbs = require('hbs');
 const cors = require('cors');
 //need connection to connect to mongoose from db page
-// const connection = require('./db/mongoose.js')
+const connection = require('./db/mongoose.js')
 var index = require('./routes');
-var users = require('./routes/users');
 const app = express();
-
-
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,7 +22,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

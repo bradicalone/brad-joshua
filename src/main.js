@@ -1,11 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom'
-import App from './App.js';
-
-console.log('updated six')
-
-ReactDOM.render(<App />, document.getElementById('photo-imgs'))
-
 /******  GLOBAL VARIABLES  *******/ 
 const animate768 = "M565.1,0v900H0c0,0,0-75.3,0-192.4c0-211.7,0-303.7,0-533.1C0,50.5,0,0,0,0H565.1z;"+
                  "M565.1,0v900H182.7c0,0-44-72.5-44-191.7c0-107.5,121.8-396.1,121.8-533.8C260.5,41,245.9,0,245.9,0H565.1z;"+
@@ -31,13 +23,13 @@ const wH = window.innerHeight;
 //Firefox Bug, transforms not working, so sets attribute to 0 instead
 if(isFirefox){
     //svg morfing problem
-    document.getElementsByTagName('feGaussianBlur')[0].setAttribute('stdDeviation', '6')
+    document.getElementsByTagName('feGaussianBlur')[0].setAttribute('stdDeviation', '6');
     //svg css problem
     _('svg-circle').setAttribute('r', 0);
     _('svg-circle').style.transform = 'scale(1)'
 } 
 
-if(isSafari) _('svg-page').style.visibility = "hidden"
+if (isSafari) _('svg-page').style.visibility = "hidden"
 
 function _(clss){
 
@@ -2663,13 +2655,12 @@ var robotSection = function(e){
 
 
 function DesignSlider() {
-    var img_container = document.getElementsByClassName('image-container')[0]
-    var img_container_rect = img_container.getBoundingClientRect()
-    let robot = document.getElementById('robot-svg');
+    let img_container = document.getElementsByClassName('image-container')[0]
+    let img_container_rect = img_container.getBoundingClientRect()
     this.ellipse = document.getElementsByClassName('clip-ellipse')[0]
     this.rec = document.getElementsByClassName('screen-path')[0].getBoundingClientRect()
     this.sectionContainer = document.getElementsByClassName('section-three-robot')[0].getBoundingClientRect()
-
+   
 
     var actualTop = this.rec.top - this.sectionContainer.top //when page not fully scrolled into view it's the actual top
    
@@ -2695,9 +2686,15 @@ function DesignSlider() {
         _('btnContainer').style.width = this.rec.width + addedWidth +'px'
         _('btnContainer').style.transform = 'translate('+ x + 'px,' + y + 'px)'
     }
+    this.setClipPos = function(){
+        let svgClipRoot = document.querySelector('.clip-cir-svg svg')
+        svgClipRoot.setAttribute('viewBox', '0 0 ' + wW + ' ' + wH)
+        _('clip-cir').setAttribute('cx', wW / 2 )
+        _('clip-cir').setAttribute('cy', wH / 2 )
+    }
     return function(){
-        // return [this.setRobotHeight()]
-        return [this.setEllipseAttributes(),this.setImgContainer(),this.setButtonLocation()]
+  
+        return [this.setEllipseAttributes(),this.setImgContainer(),this.setButtonLocation(), this.setClipPos()]
 
     }.bind(this)
 }
@@ -2707,7 +2704,6 @@ window.addEventListener('resize',function(e){
     var designSlider = new DesignSlider()
     designSlider()  //updates canvas size
     updateRobot[1]()  //updates button, image location , attributes of robot
-    
 });
 
 // **** ASSEMBLY LINE SECTION ****
@@ -3194,6 +3190,7 @@ class InLargeImg extends RollerUnit {
         // this.targetElem = this.targetElem
         this.checkForDuplicates = this.checkForDuplicates
         this.moveElement = this.moveElement
+        this.clipStart = 0
         this.Y = 0
     }
     
@@ -3268,23 +3265,33 @@ class InLargeImg extends RollerUnit {
         let fragment = document.createDocumentFragment();
         fragment.appendChild(el)
         this.imgWrap.insertBefore(fragment, img_content);
-        this.imgWrap.classList.add('show-img')
-        this.imgWrap.classList.remove('hide-img')
+        if(isSafari){
+            this.imgWrap.classList.add('show-img-safari')
+            this.imgWrap.classList.remove('hide-img-safari')
+        }else{
+            this.imgWrap.classList.add('show-img')
+            this.imgWrap.classList.remove('hide-img')
+        }
     }
 
     removeImg(e){
-   
-        //Only ran to exit out of image from click handler
+        //Only ran to exit out of image from click handler 
         if(e){
-            this.container.style.opacity = 0
-            this.imgWrap.classList.replace('show-img', 'hide-img')
-            setTimeout( () => {
-                this.imgWrap.classList.replace('hide-img', 'show-img')
-                this.container.removeAttribute('style')
-                this.img.style.display = 'none'
-            },1100)
+            if(isSafari){
+                this.container.style.opacity = 0
+                this.imgWrap.classList.replace('show-img-safari', 'hide-img-safari')
+                requestAnimationFrame(this.animateClipPath)
+            }else{
+                this.container.style.opacity = 0
+                this.imgWrap.classList.replace('show-img', 'hide-img')
+                setTimeout( () => {
+                    this.imgWrap.classList.replace('hide-img', 'show-img')
+                    this.container.removeAttribute('style')
+                    this.img.style.display = 'none'
+                },900)
+            }   
         }else{
-            
+            //Ran when image is slid into place from slider
             _('img-content').textContent = ''
             this.img.parentNode.removeChild(this.img)
         }
@@ -3304,28 +3311,34 @@ class InLargeImg extends RollerUnit {
         this.addClickListener()
         this.container.style.display = 'flex'
         this.container.style.opacity = 1
+        if(isSafari) requestAnimationFrame(this.animateClipPath)
     }
-                         // **  REMOVE ANIMATECLIPPATH IF I DON'T REALLLY HAVE TO USE IT FOR FIREFOX **
-    //Firefox only
+
+    //Safari only
     animateClipPath(timestamp){
         if(!this.start) this.start = timestamp
         this.runtime = timestamp - this.start;
-        const progress = Math.min(this.runtime / 1000, 1)
-        this.imgWrap.style.clipPath = `circle(${this.clipStart + (this.clipValue * progress)}%)`
-    
+        const progress = Math.min(this.runtime / 800, 1);
+
+        this.clipStart === 0 ? _('clip-cir').setAttribute('r', 100 * progress + '%') 
+            : _('clip-cir').setAttribute('r', 100 - 100 * progress + '%');
+
         if(progress < 1){
             requestAnimationFrame(this.animateClipPath)
         }else {
 
             if(this.container.style.opacity == 0){
-        
                 // Removes flex and opacity, sets back to display none
-                this.container.removeAttribute('style')
-                // this.img.parentNode.removeChild(this.img)
+                this.imgWrap.classList.replace( 'hide-img-safari', 'show-img-safari' )
+                this.container.removeAttribute( 'style' )
+                this.img.style.display = 'none'
             }
             this.start = 0
+            this.clipStart = +_('clip-cir').attributes[3].value.replace(/%/ig, '')
+            return;
         }
     }
+
     getTransform(){
         let regEx = /^scale/g;
         let transform = this.group.style.transform.replace(/^(\w*\(-?\d*.\w*\))(.*)/ig, "$1")
@@ -3791,7 +3804,6 @@ class Navigation {
 
     controller(){
         _('nav-list').addEventListener('click', (e) => {
-            console.log(e.target)
             navToggle.toggle = false
             if( e.target.nodeName === "BUTTON"){
             
@@ -4145,12 +4157,12 @@ window.onload = function(e){
         requestAnimationFrame(newTechnologies.draw.bind(newTechnologies))
     }.bind(this));
 
-    var starryNight = new StarryNight()
+    let starryNight = new StarryNight()
     starryNight.loadImages()
 
     hoverMap()
     
-    var designSlider = new DesignSlider();
+    let designSlider = new DesignSlider();
     designSlider();
 
     robot[1]() //updates robot location
@@ -4158,8 +4170,5 @@ window.onload = function(e){
 
     robotFlight.flyIntoPlace.hideRobot(1.3); //Hides flying robot out of screen view
 
-    // loadPhotoImg( _('photo-img') );
-    
-    
 }.bind(this);
 

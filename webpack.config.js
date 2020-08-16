@@ -7,12 +7,15 @@ module.exports = (env) => {
     
     return {
         mode: env,
-        entry: './src/main.js',
+        entry: ['./src/main.js','./src/App.js' ],
         module: {
             rules: [{
                 loader: 'babel-loader',
                 test: /\.js$/,
                 exclude: /node-modules/
+            },{
+                use: ['style-loader', 'css-loader'],
+                test: /\.css|\.scss$/
             }]
         },
         devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
