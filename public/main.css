@@ -476,9 +476,9 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 .map-wrap {
 	position: relative;
-    left: calc(50% - 130px);
-    width: 70%;
-    max-width: 775px;
+    left: calc(50% - 170px);
+    width: 85%;
+    max-width: 900px;
     transform: translate(-50%);
 }
 
@@ -603,6 +603,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 .circ-middle, .circ-ring {
 	will-change: transform, opacity;
 	transform: scale(0);
+	/* r: 0px; */
 	opacity: 0;
 }
 
@@ -617,16 +618,16 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 @keyframes ringAnimate {
   	40%{
   		stroke-width: .2;
-  		transform: scale(.1);
+		  transform: scale(.1);
   	}
   	60% {
   		stroke-width: 1;
-  		opacity: 1;
+		opacity: 1;
     	transform: scale(.5);
   	}
   	100%{
   		stroke-width: 1.5;
-  		opacity: 0;
+		  opacity: 0;
   		transform: scale(5.8);
   	}	
 }
@@ -1299,6 +1300,12 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		left: 5%;
 		position: relative;
 	}
+	.nav-list button svg{
+		width: 30px;
+	}
+	#section-six-photo .content {
+		margin-bottom: 0
+	}
 	
 }
 @media (min-width: 546px){
@@ -1309,7 +1316,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 @media (min-width: 546px) and (max-width: 1025px){
 	.map-wrap {
 		top: 30%;
-		left: 200px;
+		left: 120px;
 	}
 	#section-four-web .content h1{
 		margin: 25px 10px;
@@ -1358,6 +1365,16 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 	}
 }
 @media (max-width: 768px){
+	.section-three-robot .content {
+		width: 100%;
+		justify-content: center;
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%);
+	}
+	#robot-svg {
+		height: auto;
+	}
 	.nav-list {
 		flex-direction: column;
 		align-items: flex-end;
@@ -1518,19 +1535,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 			}
 		}
 }
-@media (max-width: 768px) {
-	.section-three-robot .content {
-		width: 100%;
-		justify-content: center;
-		position: absolute;
-		left: 50%;
-		transform: translate(-50%);
-	}
-	#robot-svg {
-		height: auto;
-	}
-}
+
 @media (min-width: 1025px) {
+	#map-svg {
+		width: 125%;
+	}
 	/* Keeps robot same size and centered at large screens*/
 	/* #robot-svg {
 		width: 1026.2px;

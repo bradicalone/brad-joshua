@@ -1221,9 +1221,10 @@ StarryNight.prototype.loadImages = function(){
 function setTechnologiesWidth(canvasWidth, svgHeight){
     
         let canvas = document.getElementById('techIcons');
-        if(wW < 768)  canvas.style.width = canvasWidth * .90 + 'px'
-        if(wW < 540)  canvas.style.width = canvasWidth * .75 + 'px'
-        canvas.style.top = svgHeight - canvas.getBoundingClientRect().height + 'px'
+        // if(wW < 768)  canvas.style.width = canvasWidth * .90 + 'px'
+        // if(wW < 540)  canvas.style.width = canvasWidth * .75 + 'px'
+    //    console.log( svgHeight, _('svg-page').getBoundingClientRect())
+        // canvas.style.top = svgHeight - canvas.getBoundingClientRect().height + 'px'
     
 }
 var Technologies = function() { 
@@ -1684,7 +1685,7 @@ function SvgPage(){
         }
     }.bind(this);
 
-    var popUpCards = function(){
+    let popUpCards = function(){
         let open_modals = this.openModals
 
         let popUpcards = _('card-popups')
@@ -1698,14 +1699,13 @@ function SvgPage(){
     if(wW < 768) popUpCards()
     
     _('circle-thumbnails').addEventListener('click', function(e){
+    
         if(wW < 768){
             hovermap[1](e)
         }else{
             removeGooey(e)
             this.openModals(e)
-        }
-        
-         
+        }  
     }.bind(this));
 };
 //Add to window object to be used for html page onend function
@@ -1916,7 +1916,11 @@ function adjustElements(){
                     }
                     //items
                     if(i === 0){
+                       let content = document.querySelector('.developer .items p')
+                       
+    
                         if(window.innerWidth < 505){
+                            content.style.display = 'none'
                             elem.childNodes[1].setAttribute('x', 10)
                             elem.childNodes[1].setAttribute('y', 424)
                             elem.childNodes[1].setAttribute('width', 370)
@@ -2004,8 +2008,8 @@ function adjustElements(){
                 var canvasArea = el.children[1]
 
                 if(wW < 650 && wH < 655){
-                    var bottom = ( svg.getAttribute('height') - 370 ) / 2
-                    items.setAttribute('y', bottom)
+                    let bottom = ( svg.getAttribute('height') - 370 ) / 2
+                    items.setAttribute('y', 0)
                     items.setAttribute('x', 5)
                 }
             }
@@ -2157,15 +2161,18 @@ function hoverMap(){
             let target = path.id.replace(regEx, '')
             let length = card.length
 
-            //If target also has 2 classList, remove that class and add p0opupcard
+            //If target also has 2 classList, remove that class and add popupcard
             while(length--){
+                // let cardHeight = card[length].getBoundingClientRect().height + 12
+                let cardHeight = card[length].getBBox().height + 10
+                // console.log('cardHeight:', cardHeight)
+                // console.log('SVG', card[length].getBBox().height)
                 let cardParent = card[length].parentNode
                 let styleTransform = +card[length].style.transform.replace(/([^-\d])/ig, '')
 
                 if(target === cardParent.id.replace(regEx, '') ) {
-                    // card[length].style.transform = 'translateY(-140px)'
-   
-                        card[length].style.transform = 'translateY(-140px)'
+                        // card[length].style.transform = 'translateY(-140px)'
+                        card[length].style.transform = 'translateY(-'+ cardHeight +'px)'
                    
                 }else if(styleTransform !== 0){
                     card[length].style.transform = 'translateY(0px)'
@@ -2181,7 +2188,7 @@ function hoverMap(){
             for(let cir of circles){
                 if(cir.classList.length > 1){
                     cir.classList.remove(cir.classList[1])
-                } 
+                }
             }
             //Stops before error when not passing arguments from click handler
             if(!arguments.length) return;
@@ -2267,7 +2274,7 @@ function hoverMap(){
         if (e.type == 'mouseover' && wW > 768) {
             handleMap(e)
         }else if(e.type === 'click'){
-    
+            
             handleMap(e)
         }
         return [dist]
