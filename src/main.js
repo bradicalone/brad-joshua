@@ -1575,6 +1575,7 @@ function SvgPage(){
 
         if(toggle){
             //Safari only
+            
             _('svg-page').style.visibility = 'hidden'
             svgCircle.classList.remove('circle-animate');
 
@@ -1605,10 +1606,17 @@ function SvgPage(){
         } 
     }
     var closeButtonShow = function(num){
-        var opposite = !num ? -56 : 0
-         _('x-circle').style.transform = 'translateX('+ num +'px)'
-         _('line')[0].style.transform = 'translateX('+ opposite +'px) rotate(-45deg)'
-         _('line')[1].style.transform = 'translateX('+ opposite +'px) rotate(45deg)'
+        if(isSafari){
+            document.querySelector('g[class="close-btn svg-button"]').style.opacity = !num ? 0 : 1
+        }
+            
+        
+        let opposite = !num ? -56 : 0
+        _('x-circle').style.transform = 'translateX('+ num +'px)'
+        _('line')[0].style.transform = 'translateX('+ opposite +'px) rotate(-45deg)'
+        _('line')[1].style.transform = 'translateX('+ opposite +'px) rotate(45deg)'
+        
+       
     }
 
     // Open page function
@@ -1622,6 +1630,7 @@ function SvgPage(){
   
         _('interactive-container').style.pointerEvents = 'none' 
         event = e;
+        console.log(_(btnOpen)[0])
         _(btnOpen)[0].style.display = 'block'
         closeButtonShow(-56)
         //Google 'Do Hyeon' font bug, function has to be ran again in view
@@ -1629,32 +1638,36 @@ function SvgPage(){
         //Throbbing Finger image icon
         if(btnOpen === 'design') document.getElementById('finger').classList.add('finger-scale')
 
-        if(isSafari){
+        let svgPageContent = document.querySelector('g.'+btnOpen+' .items')
 
+        if(isSafari){
             toggle = true;
-             _('svg-page').style.visibility = "visible"
+            _('svg-page').style.clipPath = 'none'
+            _('svg-page').style.visibility = 'visible'
             svgCircle.classList.add('circle-animate')
 
             svgCircle.onanimationend = function(){
-      
-                document.querySelector('g.'+btnOpen+' .items').classList.add('items-active')
-                document.getElementsByClassName(btnOpen)[1].parentElement.classList.add('showCanvas')
 
+                svgPageContent.style.transform = 'translate3d(0, 0, 0)'
+                svgPageContent.style.opacity = 1
+                document.getElementsByClassName(btnOpen)[1].parentElement.classList.add('showCanvas')
             }
 
             //Closes the page animated down
             svgCloseButton.addEventListener('click', function(){
                 toggle = true;
+                closeButtonShow(0)
+                svgPageContent.style.opacity = 0
+                svgPageContent.style.transform = 'translate3d(-75px, 0, 0)'
 
                 //Automatically stops canvas 
                 Stretch.prototype.toggle = false
                 slotMachine.prototype.toggle = false
                 StarryNight.prototype.toggle = false
                 Technologies.prototype.toggle = false
-              
+                
                 //Canvas / Items fades out
                 document.getElementsByClassName(btnOpen)[1].parentElement.classList.remove('showCanvas')
-                 
             })
         }else{
             toggle = false;
@@ -1662,7 +1675,6 @@ function SvgPage(){
             requestAnimationFrame(function(timestamp){
                 this.speed = 600;
                 this.animateCircle(timestamp, btnOpen)
-              
             }.bind(this))
 
             svgCloseButton.addEventListener('click', function(e){
@@ -1678,29 +1690,30 @@ function SvgPage(){
              
                     //Current SVG element hides
                     document.getElementsByClassName(btnOpen)[0].style.display = 'none'
-                    document.querySelector('g.'+btnOpen+' .items').classList.remove('showCanvas')
-                    // document.getElementsByClassName(btnOpen)[1].parentElement.classList.remove('showCanvas')
+                    svgPageContent.classList.remove('showCanvas')
+  
                 },1100)
             });
         }
     }.bind(this);
 
-    let popUpCards = function(){
-        let open_modals = this.openModals
+    // let popUpCards = function(){
+    //     let open_modals = this.openModals
 
-        let popUpcards = _('card-popups')
-        for(let cards of popUpcards){
-            cards.addEventListener('click', function(e){
-                removeGooey(e)
-                open_modals(this.attributes[3].value)
-            })
-        }
-    }.bind(this)
-    if(wW < 768) popUpCards()
+    //     let popUpcards = _('card-popups')
+    //     for(let cards of popUpcards){
+    //         cards.addEventListener('click', function(e){
+    //             removeGooey(e)
+    //             open_modals(this.attributes[3].value)
+    //         })
+    //     }
+    // }.bind(this)
+    // if(wW < 768) popUpCards()
     
     _('circle-thumbnails').addEventListener('click', function(e){
     
         if(wW < 768){
+            setTimeout(() => this.openModals(e), 2000)
             hovermap[1](e)
         }else{
             removeGooey(e)
@@ -2163,16 +2176,13 @@ function hoverMap(){
 
             //If target also has 2 classList, remove that class and add popupcard
             while(length--){
-                // let cardHeight = card[length].getBoundingClientRect().height + 12
                 let cardHeight = card[length].getBBox().height + 10
-                // console.log('cardHeight:', cardHeight)
-                // console.log('SVG', card[length].getBBox().height)
+ 
                 let cardParent = card[length].parentNode
                 let styleTransform = +card[length].style.transform.replace(/([^-\d])/ig, '')
 
                 if(target === cardParent.id.replace(regEx, '') ) {
-                        // card[length].style.transform = 'translateY(-140px)'
-                        card[length].style.transform = 'translateY(-'+ cardHeight +'px)'
+                    card[length].style.transform = 'translateY(-'+ cardHeight +'px)'
                    
                 }else if(styleTransform !== 0){
                     card[length].style.transform = 'translateY(0px)'
@@ -2243,9 +2253,7 @@ function hoverMap(){
      
            //If click comes from opening svg modals
             if(target === 'card-color-st39' || wW > 768 && e.type === 'click'){
-
-                return  removeAll(path)
-                        
+                return  removeAll(path)   
             }
             // mouse over
             if(e.target.id){

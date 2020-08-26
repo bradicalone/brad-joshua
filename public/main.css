@@ -177,7 +177,6 @@ section {
 
 #back-two{
 	z-index: -1;
-	-webkit-clip-path: url("#clipped");
 	clip-path: url("#clipped");
 	width: 100%;
 	height: 100%;
@@ -193,8 +192,8 @@ section {
 	z-index: 1000;
 	transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
-/*	-webkit-clip-path: url("#clipped");*/
-	clip-path: url("#clipped");
+	-webkit-clip-path: url("#clipped");
+	/* clip-path: url("#clipped"); */
     position: fixed;
 	top: 50%;
     left: 50%;
@@ -357,6 +356,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 #path {
+	-webkit-clip-path: url(#myClip);
 	clip-path: url(#myClip);
 }
 
@@ -444,6 +444,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 
 .circle-animate {
+	/* transform: scale(1);
+	-webkit-transform: scale(1); */
   animation: safariAnimate 1s cubic-bezier(0,1,1,0) forwards running;
 }
 
@@ -460,7 +462,8 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 .interactive-container {
     display: inline-flex;
-    width: 100%;
+	width: 100%;
+	overflow: hidden;
 }
 
 .interactive-container .icon-wrap {
@@ -472,6 +475,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 
 .interactive-container .button-wrap {
 	height: 240px;
+	z-index: 100;
 }
 
 .map-wrap {
@@ -1227,11 +1231,11 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 		display: none;
 	}
 	.map-wrap {
-		left: 135px;
+		left: 75px;
 	}
 	.interactive-container  {
 		position: absolute;
-    	top: 31%;
+    	top: 310px;
     	transform: translateY(-50%);
 	}
 	.interactive-container .button-wrap{
@@ -1305,8 +1309,7 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 }
 @media (min-width: 546px) and (max-width: 1025px){
 	.map-wrap {
-		top: 30%;
-		left: 120px;
+		left: 0;
 	}
 	#section-four-web .content h1{
 		margin: 25px 10px;
@@ -1567,7 +1570,6 @@ g.photo, g.developer, g.design , g.animations, g.technologies{
 @media (max-width: 1025px) {
 	.map-wrap {
 		transform: none;
-    	position: absolute;
 	}
 	#section-four-web .content {
 		position: relative;
