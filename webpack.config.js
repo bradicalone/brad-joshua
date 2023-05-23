@@ -6,25 +6,38 @@ module.exports = (env) => {
     const isProduction = env === 'production';
     
     return {
-        mode: env,
-        entry: ['./src/main.js','./src/App.js' ],
+        mode: env.developement || 'production',
+        entry: ['./src/App.js' ],
         module: {
             rules: [{
-                loader: 'babel-loader',
-                test: /\.js$/,
-                exclude: /node-modules/
-            },{
-                use: ['style-loader', 'css-loader'],
-                test: /\.css|\.scss$/
-            }]
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
+                    }
+                }
+                },{
+                    use: ['style-loader', 'css-loader'],
+                    test: /\.css|\.scss$/
+                }
+            ]
         },
-        devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: 'source-map',
         devServer: {
-            contentBase: path.join(__dirname, 'public')
+            static: {
+                directory: path.join(__dirname, './public'),
+                watch: true // Stops from rebuilding on changes
+            },
+            client: {
+                overlay: false,
+            },
         },
         output: {
             path: path.join(__dirname, 'public'),
             filename: 'bundle.js',
-        }  
+        },
+        
     }
 };

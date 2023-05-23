@@ -9,6 +9,7 @@ const cors = require('cors');
 //const connection = require('./db/mongoose.js')
 var index = require('./routes');
 const app = express();
+const { NODE_ENV } = process.env;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +23,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+
+// In production will serve Admin / Frontend
+if (NODE_ENV === 'production') {
+  // Static build folder
+  app.use(express.static(__dirname + '/public'));
+
+  // Handle SPA
+  app.get('/*', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -16,7 +16,7 @@ class Photo extends React.Component {
         // this.positionPhotoContainer()
     }
 
-    resizeClipRect(){
+    resizeClipRect(){ 
         let containerSize = document.querySelector('.image-border').getBoundingClientRect();
         let SVGrect = document.querySelector('#photo-img-clip rect');
         // rect.setAttribute('width', w)
